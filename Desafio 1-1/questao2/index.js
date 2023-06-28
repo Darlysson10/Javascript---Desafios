@@ -99,19 +99,6 @@ let triangulo2 =  new Triangulo(new Vertice(prompt('Digite o valor de x do vért
 console.log("Triângulo 3:")
 let triangulo3 =  new Triangulo(new Vertice(prompt('Digite o valor de x do vértice 1: '), prompt('Digite o valor de y do vértice 1: ')), new Vertice(prompt('Digite o valor de x do vértice 2: '), prompt('Digite o valor de y do vértice 2: ')), new Vertice(prompt('Digite o valor de x do vértice 3: '), prompt('Digite o valor de y do vértice 3: ')));
 
-
-
-
-console.log("Lados do triângulo 1:")
-console.log(triangulo1.lado());
-
-console.log("Lados do triângulo 2:")
-console.log(triangulo2.lado());
-
-console.log("Lados do triângulo 3:")
-console.log(triangulo3.lado());
-
-
 console.log("Comparando os triângulos:")
 console.log(`Triângulo 1 e Triângulo 2 são iguais? ${triangulo1.t_equals(triangulo2)}`);
 console.log(`Triângulo 1 e Triângulo 3 são iguais? ${triangulo1.t_equals(triangulo3)}`);
