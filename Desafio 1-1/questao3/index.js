@@ -84,9 +84,9 @@ addX = prompt('Digite o valor de x do vértice: ');
 addY = prompt('Digite o valor de y do vértice: ');
 if (poligono.addVertice(new Vertice(addX, addY))){
     console.log("Vértice adicionado com sucesso");
+    caracteristicas(poligono);
 }
 else{
     console.log("Vértice não adicionado pois já existe um vértice com as mesmas coordenadas");
 }
 
-caracteristicas(poligono);
