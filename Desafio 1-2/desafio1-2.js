@@ -27,6 +27,12 @@ class Paciente {
 }
 
 class Consulta {
+    
+    #cpf_paciente;
+    #data;
+    #horaInicial;
+    #horaFinal;
+
     constructor(cpf_paciente, data,horaInicial, horaFinal) {
         this.#cpf_paciente = cpf_paciente;
         this.#data = data;
@@ -37,6 +43,9 @@ class Consulta {
 }
 
 class Agenda {
+    
+    #consultas;
+    
     constructor() {
         this.#consultas = [];
     }
@@ -80,18 +89,40 @@ class Agenda {
         return consultas_passadas;
     }
 
-
-
-
     cancelarAgendamento(cpf, data, horaInicial) {
         let consulta_id = this.buscarConsulta(cpf, data, horaInicial);
         this.#consultas.splice(consulta_id, 1);
     }
 
-    listarAgenda() {
-        return this.#consultas;
-        // Chamar na classe de view
+    deletarConsultasPaciente(cpf) {
+        let consultas = this.consultasPassadasPaciente(cpf);
+        for (let i = 0; i < consultas.length; i++) {
+            this.cancelarAgendamento(cpf, consultas[i].data, consultas[i].horaInicial);
+        }
     }
+
+    static getAgendaToda() {
+        //retorna toda a agenda ordenada por data e hora inicial
+        let consultas = this.#consultas;
+        consultas.sort(function (a, b) {
+            return a.data.localeCompare(b.data) || a.horaInicial - b.horaInicial;
+        });
+        return consultas;
+    }
+
+    static getAgendaPeriodo(dataInicial, dataFinal) {
+        //listagem da agenda ordenada por data e hora inicial, considerando apenas as consultas que estão dentro do período informado
+        let consultas = this.getAgendaToda();
+        let consultas_periodo = [];
+        for (let i = 0; i < consultas.length; i++) {
+            if (consultas[i].data >= dataInicial && consultas[i].data <= dataFinal) {
+                consultas_periodo.push(consultas[i]);
+            }
+        }
+        return consultas_periodo;
+    }
+
+
 }
 
 class CadastroDePacientes {
@@ -115,21 +146,31 @@ class CadastroDePacientes {
         }
     }
 
-    deletarConsultasPaciente(cpf) {
-        let consultas = Agenda.consultasPassadasPaciente(cpf);
-        for (let i = 0; i < consultas.length; i++) {
-            Agenda.cancelarAgendamento(cpf, consultas[i].data, consultas[i].horaInicial);
-        }
-    }
-
 
     deletarPaciente(cpf) {
         //Só chegar aqui se passar das validações. As validações são feitas assim que o usuário envia uma entrada.
         let paciente_id = this.BuscarPaciente(cpf);
-        this.deletarConsultasPaciente(cpf);
+        Agenda.deletarConsultasPaciente(cpf);
         this.#pacientes.splice(paciente_id, 1);
+    }
 
+    static getPacientesCPF() {
+        //retorna os pacientes ordenados por cpf
+        let pacientes = this.pacientesCadastrados();
+        pacientes.sort(function (a, b) {
+            return a.cpf - b.cpf;
+        });
+        return pacientes;
 
+    }
+
+    static getPacientesNome() {
+        //retorna os pacientes ordenados por nome
+        let pacientes = this.pacientesCadastrados();
+        pacientes.sort(function (a, b) {
+            return a.nome.localeCompare(b.nome);
+        });
+        return pacientes;
     }
     
 }
@@ -295,29 +336,82 @@ class ValidacaoAgenda {
     }
 
 
-// Abaixo estão os métodos para validar o angendamento ou cancelamento do agendamento
-    static ValidacaoAgendamentoConsulta(cpf, data, horaInicial, horaFinal) {
-        if (!this.validacaoDataHora(data, horaInicial, horaFinal) || !this.validacaoAgendamentoExistente(cpf, data, horaInicial, horaFinal)) {
-            return false;
-        }
-        return true;
-    }
-
-    static ValidacaoCancelamentoAgendamento(cpf, data, horaInicial, horaFinal) {
-        if (!this.validacaoDataHora(data, horaInicial, horaFinal) || this.validacaoAgendamentoExistente(cpf, data, horaInicial, horaFinal) || !ValidacaoCPF.validacaoCPFExistente(cpf)) {
+// O método abaixo é utilizado tanto para o agendamento quanto para o cancelamento de um agendamento.
+    static ValidacaoAgenda(cpf, data, horaInicial, horaFinal) {
+        if (!this.validacaoDataHora(data, horaInicial, horaFinal) || !this.validacaoAgendamentoExistente(cpf, data, horaInicial, horaFinal) || !ValidacaoCPF.validacaoCPFExistente(cpf)) {
             return false;
         }
         return true;
     }
 
 }
+class Menus {
+    static menuPrincipal() {
+        console.log("Menu Principal");
+        console.log("1 - Cadastro de Paciente");
+        console.log("2 - Agenda");
+        console.log("3 - Fim");
+    }
 
+    static menuCadastroPaciente() {
+        console.log("Menu Cadastro de Paciente");
+        console.log("1 - Cadastrar novo Paciente");
+        console.log("2 - Excluir Paciente");
+        console.log("3 - Listar Pacientes (ordenado por CPF)")
+        console.log("4 - Listar Pacientes (ordenado por nome)");
+        console.log("5 - Voltar p/ menu principal");
+    }
 
+    static menuAgenda() {
+        console.log("Agenda");
+        console.log("1 - Agendar Consulta");
+        console.log("2 - Cancelar Consulta");
+        console.log("3 - Listar Agenda");
+        console.log("4 - Voltar p/ menu principal");
+    }
+}
 
-//Continuar validações a partir da parte de exclusão de pacientes.
+class Listagem {
+    static listarPacientesCPF() {
+        let pacientes = CadastroDePacientes.getPacientesCPF();
+        for (let i = 0; i < pacientes.length; i++) {
+            console.log(pacientes[i].nome + " - " + pacientes[i].cpf + " - " + pacientes[i].dataNascimento);
+        }
+    }
 
+    static listarAgendamentosPaciente(cpf) {
+        let consultas = Agenda.consultasFuturasPaciente(cpf);
+        for (let i = 0; i < consultas.length; i++) {
+            console.log("Agendado para:"+ consultas[i].data + "\n" + consultas[i].horaInicial + " às " + consultas[i].horaFinal);
+        }
+    }
 
+    static listarPacientesNome() {
+        let pacientes = CadastroDePacientes.getPacientesNome();
+        for (let i = 0; i < pacientes.length; i++) {
+            console.log(pacientes[i].nome + " - " + pacientes[i].cpf + " - " + pacientes[i].dataNascimento);
+            //listar agendamentos caso o paciente tenha consultas agendadas
+            if (Agenda.consultasFuturasPaciente(pacientes[i].cpf).length > 0) {
+                console.log("Consultas Futuras:");
+                this.listarAgendamentosPaciente(pacientes[i].cpf);
+            }
+        }
+    }
 
+    static listarAgenda() {
+        let consultas = Agenda.getAgendaToda();
+        for (let i = 0; i < consultas.length; i++) {
+            console.log(consultas[i].cpf_paciente + " - " + consultas[i].data + " - " + consultas[i].horaInicial + " - " + consultas[i].horaFinal);
+        }
+    }
+
+    static listarAgendaPeriodo(dataInicial, dataFinal) {
+        let consultas = Agenda.getAgendaPeriodo(dataInicial, dataFinal);
+        for (let i = 0; i < consultas.length; i++) {
+            console.log(consultas[i].cpf_paciente + " - " + consultas[i].data + " - " + consultas[i].horaInicial + " - " + consultas[i].horaFinal);
+        }
+    }
+}
 
 //View - Define a interface com o usuário. Recebe os dados e os envia para o Controller.
 
