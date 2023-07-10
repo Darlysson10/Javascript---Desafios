@@ -1,0 +1,6 @@
+IMPORTANTE: Veja os slides antes de voltar a fazer o código. Depois que terminar o código, reveja tudo e observe se dá para melhorar.
+
+
+Model: pacientes, consultas, validações, etc.
+View: Menus, listagens, mensagens de erros, entradas
+Controller: Recebe eventos do usuário, invoca operações do modelo e atualiza a visão. Inclusão, exclusão, agendamento, cancelamento e listagem.

@@ -10,7 +10,7 @@ class Cliente {
     }
     imprimirDados() {
         console.log(`Nome: ${this.nome}`);
-        console.log(`CPF: ${this.cpf.toString().replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}`);
+        console.log(`CPF: ${this.cpf.toString().replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}`); //\d{3} significa 3 dígitos, \d{2} significa 2 dígitos, $1, $2, $3 e $4 são os grupos de 3 dígitos e 1 de 2 dígitos, respectivamente
         console.log(`Data de nascimento: ${this.dataNascimento.toLocaleDateString('pt-BR')}`);
         console.log(`Renda mensal: R$ ${this.rendaMensal.toFixed(2).replace('.', ',')}`);
         console.log(`Estado civil: ${this.estadoCivil}`);
