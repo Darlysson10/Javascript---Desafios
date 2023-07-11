@@ -229,8 +229,10 @@ class ValidacaoCadastroPaciente {
 
     static validacaoDataNascimento(dataNascimento) {
         // Mudar para luxon
-        let data_atual = new Date();
-        let data_nascimento = new Date(dataNascimento);
+        /*let data_atual = new Date();
+        let data_nascimento = new Date(dataNascimento);*/
+        let data_atual = DateTime.now();
+        let data_nascimento = DateTime.fromISO(dataNascimento);
         if (data_nascimento < data_atual) {
             return true;
         }
@@ -273,11 +275,14 @@ class ValidacaoExclusaoPaciente {
 
 }
 
+const { DateTime } = require("luxon");
 class ValidacaoDataHora {
 
     static validacaoData(data) {
-        let data_atual = new Date();
-        let data_consulta = new Date(data);
+        /*let data_atual = new Date();
+        let data_consulta = new Date(data);*/
+        let data_atual = DateTime.now();
+        let data_consulta = DateTime.fromISO(data);
         if (data_consulta > data_atual) {
             return true;
         }
@@ -285,8 +290,10 @@ class ValidacaoDataHora {
     }
 
     static validacaoHora(hora) {
-        let hora_atual = new Date();
-        let hora_consulta = new Date(hora);
+        /*let hora_atual = new Date();
+        let hora_consulta = new Date(hora);*/
+        let hora_atual = DateTime.now().hour;
+        let hora_consulta = DateTime.fromISO(hora).hour;
         if (hora_consulta > hora_atual) {
             return true;
         }
