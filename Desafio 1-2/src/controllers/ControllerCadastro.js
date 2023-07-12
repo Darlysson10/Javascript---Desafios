@@ -5,7 +5,8 @@ const CadastroDePacientes = require('../models/CadastroDePacientes');
 const ViewListagem = require('../views/ViewListagem');
 const InputMenus = require('../views/InputMenus');
 const ValidacaoCadastroPaciente = require('../models/ValidacaoCadastro');
-const ValidacaoExclusaoPaciente = require('../models/ValidacaoExclusao');
+const ValidacaoExclusaoPaciente = require('../models/ValidacaoExclusaoPaciente');
+const ViewValidacoes = require('../views/ViewValidacaoes');
 const prompt = require('prompt-sync')({ sigint: true });
 
 class ControllerCadastro {
@@ -35,9 +36,10 @@ class ControllerCadastro {
 }
     static ControllerCadastrarPaciente(){
         let dadosPaciente = InputMenus.menuCadastrarPaciente();
-        let resultadoValidacao = ValidacaoCadastroPaciente.validacaoPaciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento);
+        let idade = Paciente.calcularIdade(dadosPaciente.dataNascimento);
+        let resultadoValidacao = ValidacaoCadastroPaciente.validacaoPaciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade);
         if (resultadoValidacao.length == 0) {
-            let paciente = new Paciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento);
+            let paciente = new Paciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade);
             CadastroDePacientes.cadastrarPaciente(paciente);
             ViewMenus.mensagemSucessoPaciente();
             this.ControllerCadastroPaciente();
@@ -53,15 +55,15 @@ class ControllerCadastro {
         let resultadoValidacao = ValidacaoExclusaoPaciente.validacaoExclusao(cpf);
         if (resultadoValidacao.length == 0) {
             CadastroDePacientes.excluirPaciente(cpf);
-            ViewMenus.mensagemSucessoExclusao();
+            ViewValidacoes.mensagemSucessoExclusao();
             this.ControllerCadastroPaciente();
         }
         else {
-            ViewMenus.mensagemErroExclusao(resultadoValidacao);
+            ViewValidacoes.mensagemErroExclusao(resultadoValidacao);
             this.ControllerExcluirPaciente();
         }
-        
-
     }
+
+
 }
 module.exports = ControllerCadastro;

@@ -34,3 +34,4 @@ class ViewValidacoes {
         console.log("Tente novamente.");
     }
 }
+module.exports = ViewValidacoes;

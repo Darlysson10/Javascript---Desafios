@@ -50,12 +50,12 @@ class ValidacaoDataHora {
         return true;
     }
 
-    static validacaoDataNascimento(dataNascimento) {
+    static validacaoDataNascimento(dataNascimento, idade) {
         
         const data_atual = DateTime.now();
         const data_nascimento = DateTime.fromISO(dataNascimento);
         // data de nascimento deve ser menor que a data atual e o paciente deve pelo menos 13 anos
-        if (data_nascimento < data_atual && data_atual.diff(data_nascimento, 'years').years >= 13) {
+        if (data_nascimento < data_atual && idade >= 13) {
             return true;
         }
         return false;

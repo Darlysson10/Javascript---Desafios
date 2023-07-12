@@ -8,12 +8,12 @@ class ValidacaoCadastroPaciente {
         return false;
     }
 
-    static validacaoPaciente(nome, cpf, dataNascimento) {
+    static validacaoPaciente(nome, cpf, dataNascimento, idade) {
         let resultados = [];
         if (!this.ValidacaoNome(nome)) {
             resultados.push(false);
         }
-        if (!ValidacaoDataHora.ValidacaoDataNascimento(dataNascimento)) {
+        if (!ValidacaoDataHora.ValidacaoDataNascimento(dataNascimento,idade)) {
             resultados.push(false);
         }
         if (!ValidacaoCPF.validacaoCPF(cpf)) {

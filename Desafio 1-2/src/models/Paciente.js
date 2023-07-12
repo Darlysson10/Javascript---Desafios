@@ -1,13 +1,16 @@
+const { DateTime } = require("luxon");
 class Paciente {
     
     #nome;
     #cpf;
     #dataNascimento;
+    #idade;
 
-    constructor(nome, cpf, dataNascimento) {
+    constructor(nome, cpf, dataNascimento, idade) {
         this.#nome = nome;
         this.#cpf = cpf;
         this.#dataNascimento = dataNascimento;
+        this.#idade = idade
     }
 
     get nome() {
@@ -21,6 +24,16 @@ class Paciente {
     get dataNascimento() {
         return this.#dataNascimento;
     }
+
+    get idade() {
+        return this.#idade;
+    }
+
+
+    calcularIdade(dataNascimento) {
+        return DateTime.now().diff(DateTime.fromISO(dataNascimento), 'years').years;
+    }
+
 
 
 }

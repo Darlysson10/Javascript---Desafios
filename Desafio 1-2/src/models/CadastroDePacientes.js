@@ -1,4 +1,5 @@
 // Guarda os pacientes cadastrados e os métodos para manipulá-los
+
 class CadastroDePacientes {
     constructor() {
         this.#pacientes = [];
@@ -28,7 +29,7 @@ class CadastroDePacientes {
         this.#pacientes.splice(paciente_id, 1);
     }
 
-    static getPacientesCPF() {
+    getPacientesCPF() {
         //retorna os pacientes ordenados por cpf
         let pacientes = this.pacientesCadastrados();
         pacientes.sort(function (a, b) {
@@ -38,7 +39,7 @@ class CadastroDePacientes {
 
     }
 
-    static getPacientesNome() {
+    getPacientesNome() {
         //retorna os pacientes ordenados por nome
         let pacientes = this.pacientesCadastrados();
         pacientes.sort(function (a, b) {
@@ -46,6 +47,7 @@ class CadastroDePacientes {
         });
         return pacientes;
     }
+
     
 }
 module.exports = CadastroDePacientes;
