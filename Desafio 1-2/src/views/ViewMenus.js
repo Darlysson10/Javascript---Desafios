@@ -1,4 +1,4 @@
-class Menus {
+class ViewMenus {
     static menuPrincipal() {
         console.log("Menu Principal");
         console.log("1 - Cadastro de Paciente");
@@ -22,5 +22,17 @@ class Menus {
         console.log("3 - Listar Agenda");
         console.log("4 - Voltar p/ menu principal");
     }
+
+    static menuCadastrarPaciente(){
+        console.log("Cadastrar Paciente");
+        console.log("Digite os dados do paciente:");
+    }
+    
+    static menuExcluirPaciente(){
+        console.log("Excluir Paciente");
+        console.log("Digite o CPF do paciente:");
+    }
+    
+
 }
-module.exports = Menus;
+module.exports = ViewMenus;

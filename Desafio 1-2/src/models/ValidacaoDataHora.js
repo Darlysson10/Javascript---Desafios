@@ -54,7 +54,8 @@ class ValidacaoDataHora {
         
         const data_atual = DateTime.now();
         const data_nascimento = DateTime.fromISO(dataNascimento);
-        if (data_nascimento < data_atual) {
+        // data de nascimento deve ser menor que a data atual e o paciente deve pelo menos 13 anos
+        if (data_nascimento < data_atual && data_atual.diff(data_nascimento, 'years').years >= 13) {
             return true;
         }
         return false;

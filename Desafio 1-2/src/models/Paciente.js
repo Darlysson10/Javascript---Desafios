@@ -2,7 +2,7 @@ class Paciente {
     
     #nome;
     #cpf;
-    #dataNascimento; // fazer isso para as outras classes também.
+    #dataNascimento;
 
     constructor(nome, cpf, dataNascimento) {
         this.#nome = nome;

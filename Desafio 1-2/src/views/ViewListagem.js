@@ -1,4 +1,4 @@
-class Listagem {
+class ViewListagem {
     static listarPacientesCPF() {
         let pacientes = CadastroDePacientes.getPacientesCPF();
         for (let i = 0; i < pacientes.length; i++) {
@@ -39,4 +39,4 @@ class Listagem {
         }
     }
 }
-module.exports = Listagem;
+module.exports = ViewListagem;
