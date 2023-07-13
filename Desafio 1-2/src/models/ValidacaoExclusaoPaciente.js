@@ -1,15 +1,20 @@
+const ValidacaoCPF = require("./ValidacaoCPF");
+const agenda = require('./Agenda');
 class ValidacaoExclusaoPaciente {
    
     static validacaoExclusaoPaciente(cpf) {
-        consultas_futuras = Agenda.consultasFuturasPaciente(cpf);
-        resultados = [];
+        consultas_futuras = agenda.consultasFuturasPaciente(cpf);
+        let resultados = [];
         if (consultas_futuras.length > 0) {
-            resultados.push(false);// retornando false, não apague o paciente
+             resultados.push(false);// retornando false, não apague o paciente
+         }
+        if (ValidacaoCPF.validacaoCPFExistente(cpf)) {
+            resultados.push(true);
         }
-        if (!ValidacaoCPF.validacaoCPF(cpf)) {
+        else{
             resultados.push(false);
         }
-        return resultados; // retornando true, apague as consultas passadas do paciente numa próxima chamada de método
+        return resultados; // retornando true, os dados do paciente são excluídos
     }
 
 

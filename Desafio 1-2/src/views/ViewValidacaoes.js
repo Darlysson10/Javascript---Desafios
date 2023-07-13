@@ -13,7 +13,7 @@ class ViewValidacoes {
             console.log("Erro: Data de nascimento inválida. O paciente deve ter pelo menos 13 anos.");
         }
         if (resultadoValidacao[2] === false) {
-            console.log("CPF inválido. O CPF deve ter 11 dígitos.");
+            console.log("Erro: CPF inválido.");
         }
         console.log("Tente novamente.");
 
@@ -57,6 +57,11 @@ class ViewValidacoes {
         }
         console.log("Tente novamente.");
     }
+
+    static mensagemSucessoCancelamento(){
+        console.log("Consulta cancelada com sucesso!");
+    }
+    
 
 }
 module.exports = ViewValidacoes;

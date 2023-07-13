@@ -45,13 +45,31 @@ class InputMenus {
         }
 
         static menuAgendarConsulta(){
-            ViewMenus.menuAgendarConsulta();
             let cpf = prompt("CPF: ");
             let data = prompt("Data: ");
             let horaInicial = prompt("Hora Inicial: ");
             let horaFinal = prompt("Hora Final: ");
             return {cpf, data, horaInicial, horaFinal};
         }
+
+        static menuListarAgenda(){
+            let opcao = parseInt(prompt("1 - Listar agenda toda\n2 - Listar agenda por período\n"));
+            return opcao;
+        }
+
+        static menuListarAgendaPeriodo(){
+            let dataInicial = prompt("Data Inicial: ");
+            let dataFinal = prompt("Data Final: ");
+            return {dataInicial, dataFinal};
+        }
+
+        static menuCancelarConsulta(){
+            let cpf = prompt("CPF: ");
+            let data = prompt("Data: ");
+            let horaInicial = prompt("Hora Inicial: ");
+            return {cpf, data, horaInicial};
+        }
+
     
 }
 module.exports = InputMenus;

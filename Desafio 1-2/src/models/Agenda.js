@@ -11,7 +11,8 @@ class Agenda {
     }
 
     buscarConsulta(cpf, data, horaInicial) { // Retorna o id da consulta no array de consultas da agenda.
-        for (let i = 0; i < this.#consultas.length; i++) {
+        const consultasAgendadas = this.#consultas;
+        for (let i = 0; i < consultasAgendadas.length; i++) {
             if (this.#consultas[i].cpf_paciente == cpf && this.#consultas[i].data == data && this.#consultas[i].horaInicial == horaInicial) {
                 return i;
             }
@@ -57,7 +58,7 @@ class Agenda {
         }
     }
 
-    static getAgendaToda() {
+    getAgendaToda() {
         //retorna toda a agenda ordenada por data e hora inicial
         let consultas = this.#consultas;
         consultas.sort(function (a, b) {
@@ -66,7 +67,7 @@ class Agenda {
         return consultas;
     }
 
-    static getAgendaPeriodo(dataInicial, dataFinal) {
+    getAgendaPeriodo(dataInicial, dataFinal) {
         //listagem da agenda ordenada por data e hora inicial, considerando apenas as consultas que estão dentro do período informado
         let consultas = this.getAgendaToda();
         let consultas_periodo = [];
@@ -80,4 +81,5 @@ class Agenda {
 
 
 }
-module.exports = Agenda;
+const agenda = new Agenda();
+module.exports = agenda;

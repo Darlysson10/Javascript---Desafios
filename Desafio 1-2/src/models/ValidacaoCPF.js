@@ -1,10 +1,9 @@
-const CadastroDePacientes = require('../models/CadastroDePacientes');
+const cadastroDePacientes = require('../models/CadastroDePacientes');
 class ValidacaoCPF {
 
 
     static validacaoTamanhoCPF(cpf) {
         if (cpf.length === 11) {
-            console.log("CPF válido tamanho");
             return true;
         }
         return false;
@@ -18,7 +17,6 @@ class ValidacaoCPF {
                 return true;
             }
         }
-        console.log("CPF inválido digitos iguais");
         return false;
 
     }
@@ -58,12 +56,11 @@ class ValidacaoCPF {
     }
 
     static validacaoCPFExistente(cpf) {
-        const pacientes = CadastroDePacientes.pacientesCadastrados();
-        if (pacientes === undefined) {
-            console.log("Não há pacientes cadastrados");
-            return true;
+        const pacientes = cadastroDePacientes.pacientesCadastrados();
+        if (pacientes.length === 0) {
+            return false;
         }
-        let paciente_id = CadastroDePacientes.buscarPaciente(cpf);
+        let paciente_id = cadastroDePacientes.buscarPaciente(cpf);
         if (paciente_id === undefined) {
             return false;
         }
@@ -71,9 +68,7 @@ class ValidacaoCPF {
     }
 
     static validacaoCPF(cpf) {
-        if (!this.validacaoCPFExistente(cpf) || !this.validacaoTamanhoCPF(cpf) || !this.validacaoDigitosIguaisCPF(cpf)) {
-            //!this.validacaoDigitosCPF(cpf)
-            console.log("CPF inválido");
+        if (this.validacaoCPFExistente(cpf) || !this.validacaoTamanhoCPF(cpf) || !this.validacaoDigitosIguaisCPF(cpf) || !this.validacaoDigitosCPF(cpf)) {
             return false;
         } 
         return true;

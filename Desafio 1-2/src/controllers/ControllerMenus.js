@@ -10,7 +10,7 @@ class ControllerMenus {
                 ControllerCadastro.ControllerCadastroPaciente();
                 break;
             case 2:
-                ControllerAgenda.ControllerAgenda();
+                ControllerAgenda.ControllerMenuAgenda();
                 break;
             case 3:
                 break;

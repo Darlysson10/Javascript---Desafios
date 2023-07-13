@@ -10,11 +10,17 @@ class ValidacaoDataHora {
         return false;
     }
 
-    static formatarData(data) {
+    static formatarDataInput(data) {
         const formato = 'dd/MM/yyyy';
         let data_formatada = DateTime.fromFormat(data, formato);
         return data_formatada;
     }
+
+    static formatarDataOutput(data) {
+        const formato = 'dd/MM/yyyy';
+        return data.toFormat(formato);
+    }
+
 
     static validacaoHora(hora) {
         const hora_atual = DateTime.now().hour;

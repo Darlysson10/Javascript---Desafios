@@ -1,14 +1,21 @@
+const cadastroDePacientes = require('../models/CadastroDePacientes');
+const agenda = require('../models/Agenda');
 class ViewListagem {
     
     // Função auxiliar para adicionar espaços à esquerda de um valor
-    padLeft(value, length) {
-        return value.toString().padStart(length, ' ');
-      }
-
     static listarPacientesCPF() {
-        let pacientes = CadastroDePacientes.getPacientesCPF();
+        // juntar com a função do nome e apenas verificar se foi pedido por cpf ou por nome
+        let pacientes = cadastroDePacientes.getPacientesCPF();
+        console.log('---------------------------------------------------------------------');
+        console.log("CPF".padEnd(20), "Nome".padEnd(20), "Data de Nascimento".padEnd(20), "Idade");
+        console.log('---------------------------------------------------------------------');
         for (let i = 0; i < pacientes.length; i++) {
-            console.log(pacientes[i].nome + " - " + pacientes[i].cpf + " - " + pacientes[i].dataNascimento);
+            console.log(pacientes[i].cpf.padEnd(20), pacientes[i].nome.padEnd(20), pacientes[i].dataNascimento.padEnd(20), pacientes[i].idade);
+            //listar agendamentos caso o paciente tenha consultas agendadas
+            if (Agenda.consultasFuturasPaciente(pacientes[i].cpf).length > 0) {
+                console.log("Consultas Futuras:");
+                this.listarAgendamentosPaciente(pacientes[i].cpf);
+            }
         }
     }
 
@@ -20,13 +27,12 @@ class ViewListagem {
     }
     
     static listarPacientesNome() {
-        let pacientes = CadastroDePacientes.getPacientesNome();
-        console.log('------------------------------------------------------------');
-        console.log('CPF           Nome                             Dt.Nasc.   Idade');
-        console.log('------------------------------------------------------------');
+        let pacientes = cadastroDePacientes.getPacientesNome();
+        console.log('---------------------------------------------------------------------');
+        console.log("CPF".padEnd(20), "Nome".padEnd(20), "Data de Nascimento".padEnd(20), "Idade");
+        console.log('---------------------------------------------------------------------');
         for (let i = 0; i < pacientes.length; i++) {
-            console.log(pacientes[i].nome + " - " + pacientes[i].cpf + " - " + pacientes[i].dataNascimento);
-            console.log(`${padLeft(pacientes[i].cpf, 11)} ${padLeft(pacientes[i].nome, 32)} ${padLeft(pacientes[i].dataNascimento, 10)} ${padLeft(pacientes[i].idade, 5)}`);
+            console.log(pacientes[i].cpf.padEnd(20), pacientes[i].nome.padEnd(20), pacientes[i].dataNascimento.padEnd(20), pacientes[i].idade);
             //listar agendamentos caso o paciente tenha consultas agendadas
             if (Agenda.consultasFuturasPaciente(pacientes[i].cpf).length > 0) {
                 console.log("Consultas Futuras:");
@@ -36,14 +42,14 @@ class ViewListagem {
     }
 
     static listarAgenda() {
-        let consultas = Agenda.getAgendaToda();
+        let consultas = agenda.getAgendaToda();
         for (let i = 0; i < consultas.length; i++) {
             console.log(consultas[i].cpf_paciente + " - " + consultas[i].data + " - " + consultas[i].horaInicial + " - " + consultas[i].horaFinal);
         }
     }
 
     static listarAgendaPeriodo(dataInicial, dataFinal) {
-        let consultas = Agenda.getAgendaPeriodo(dataInicial, dataFinal);
+        let consultas = agenda.getAgendaPeriodo(dataInicial, dataFinal);
         for (let i = 0; i < consultas.length; i++) {
             console.log(consultas[i].cpf_paciente + " - " + consultas[i].data + " - " + consultas[i].horaInicial + " - " + consultas[i].horaFinal);
         }
