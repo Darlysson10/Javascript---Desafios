@@ -15,14 +15,6 @@ class ViewMenus {
         console.log("5 - Voltar p/ menu principal");
     }
 
-    static menuAgenda() {
-        console.log("Agenda");
-        console.log("1 - Agendar Consulta");
-        console.log("2 - Cancelar Consulta");
-        console.log("3 - Listar Agenda");
-        console.log("4 - Voltar p/ menu principal");
-    }
-
     static menuCadastrarPaciente(){
         console.log("Cadastrar Paciente");
         console.log("Digite os dados do paciente:");
@@ -33,6 +25,15 @@ class ViewMenus {
         console.log("Digite o CPF do paciente:");
     }
     
+    static menuAgenda() {
+        console.log("Agenda");
+        console.log("1 - Agendar Consulta");
+        console.log("2 - Cancelar Consulta");
+        console.log("3 - Listar Agenda");
+        console.log("4 - Voltar p/ menu principal");
+    }
+
+
 
 }
 module.exports = ViewMenus;

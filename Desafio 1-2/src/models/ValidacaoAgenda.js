@@ -10,7 +10,7 @@ class ValidacaoAgenda {
 
 
 // O método abaixo é utilizado tanto para o agendamento quanto para o cancelamento de um agendamento.
-    static ValidacaoAgenda(cpf, data, horaInicial, horaFinal) {
+    static validacaoAgenda(cpf, data, horaInicial, horaFinal) {
         if (!this.validacaoDataHora(data, horaInicial, horaFinal) || !this.validacaoAgendamentoExistente(cpf, data, horaInicial, horaFinal) || !ValidacaoCPF.validacaoCPFExistente(cpf)) {
             return false;
         }

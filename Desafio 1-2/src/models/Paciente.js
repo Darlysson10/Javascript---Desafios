@@ -30,7 +30,7 @@ class Paciente {
     }
 
 
-    calcularIdade(dataNascimento) {
+    static calcularIdade(dataNascimento) {
         return DateTime.now().diff(DateTime.fromISO(dataNascimento), 'years').years;
     }
 

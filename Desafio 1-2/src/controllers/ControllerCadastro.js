@@ -7,6 +7,7 @@ const InputMenus = require('../views/InputMenus');
 const ValidacaoCadastroPaciente = require('../models/ValidacaoCadastro');
 const ValidacaoExclusaoPaciente = require('../models/ValidacaoExclusaoPaciente');
 const ViewValidacoes = require('../views/ViewValidacaoes');
+const ValidacaoDataHora = require('../models/ValidacaoDataHora');
 const prompt = require('prompt-sync')({ sigint: true });
 
 class ControllerCadastro {
@@ -36,16 +37,19 @@ class ControllerCadastro {
 }
     static ControllerCadastrarPaciente(){
         let dadosPaciente = InputMenus.menuCadastrarPaciente();
+        dadosPaciente.dataNascimento = ValidacaoDataHora.formatarData(dadosPaciente.dataNascimento);
         let idade = Paciente.calcularIdade(dadosPaciente.dataNascimento);
+        console.log(dadosPaciente.nome, dadosPaciente.cpf, idade)
         let resultadoValidacao = ValidacaoCadastroPaciente.validacaoPaciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade);
-        if (resultadoValidacao.length == 0) {
+        if (ValidacaoCadastroPaciente.ValidacaoResultados(resultadoValidacao)) {
             let paciente = new Paciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade);
-            CadastroDePacientes.cadastrarPaciente(paciente);
-            ViewMenus.mensagemSucessoPaciente();
+            const cadastroDePacientes = new CadastroDePacientes();
+            cadastroDePacientes.cadastrarPaciente(paciente);
+            ViewValidacoes.mensagemSucessoPaciente();
             this.ControllerCadastroPaciente();
         }
         else {
-            ViewMenus.mensagemErroCadastroPaciente(resultadoValidacao);
+            ViewValidacoes.mensagemErroCadastroPaciente(resultadoValidacao);
             this.ControllerCadastrarPaciente();
         }
    }

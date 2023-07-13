@@ -1,6 +1,4 @@
 const ViewMenus = require('../views/ViewMenus');
-const Paciente = require('../models/Paciente');
-const CadastroDePacientes = require('../models/CadastroDePacientes');
 const ViewListagem = require('../views/ViewListagem');
 const prompt = require('prompt-sync')({ sigint: true });
 
@@ -38,6 +36,21 @@ class InputMenus {
     
         static menuListarPacientesNome() {
             ViewListagem.listarPacientesNome();
+        }
+
+        static menuAgenda(){
+            ViewMenus.menuAgenda();
+            let opcao = parseInt(prompt());
+            return opcao;
+        }
+
+        static menuAgendarConsulta(){
+            ViewMenus.menuAgendarConsulta();
+            let cpf = prompt("CPF: ");
+            let data = prompt("Data: ");
+            let horaInicial = prompt("Hora Inicial: ");
+            let horaFinal = prompt("Hora Final: ");
+            return {cpf, data, horaInicial, horaFinal};
         }
     
 }
