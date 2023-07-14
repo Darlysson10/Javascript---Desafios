@@ -1,5 +1,5 @@
 class ViewValidacoes {
-
+    // Mensagens dos resulstados das validações.
     static menssagemSucessoPaciente(){
         console.log("Paciente cadastrado com sucesso!");
     }
@@ -16,7 +16,7 @@ class ViewValidacoes {
             console.log("Erro: CPF inválido.");
         }
         console.log("Tente novamente.");
-
+        
     }
 
     static mensagemSucessoExclusao(){
@@ -41,27 +41,34 @@ class ViewValidacoes {
     static mensagemErroAgendamento(resultadoValidacao){
         console.log("A consulta não foi agendada. Verifique os erros abaixo:");
         if (!resultadoValidacao[0]) {
-            console.log("Erro: O paciente não está cadastrado.");
+            console.log("Erro: A hora inicial deve ser menor que a hora final.");
         }
         if (!resultadoValidacao[1]) {
-            console.log("Erro: O paciente possui consulta(s) agendada(s) neste horário."); 
+            console.log("Erro: O paciente não está cadastrado.");
         }
         if (!resultadoValidacao[2]) {
             console.log("Erro: O paciente possui consulta(s) agendada(s) neste dia.");
         }
-        if (!resultadoValidacao[3]) {
-            console.log("Erro: A hora inicial deve ser menor que a hora final.");
+
+        console.log("Tente novamente.");
+    }
+
+    static mensagemErroCancelamento(resultadoValidacao){
+        console.log("A consulta não foi cancelada. Verifique os erros abaixo:");
+        if (!resultadoValidacao[0]) {
+            console.log("Erro: O paciente não está cadastrado.");
         }
-        if (!resultadoValidacao[4]) {
-            console.log("Erro: A data deve ser posterior a data atual.");
+        if (!resultadoValidacao[1]) {
+            console.log("Erro: O paciente não possui consulta agendada neste dia.");
         }
         console.log("Tente novamente.");
     }
+    
 
     static mensagemSucessoCancelamento(){
         console.log("Consulta cancelada com sucesso!");
     }
-    
+
 
 }
 module.exports = ViewValidacoes;

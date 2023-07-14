@@ -1,5 +1,5 @@
 // Guarda os pacientes cadastrados e os métodos para manipulá-los
-
+const agenda = require('./Agenda');
 class CadastroDePacientes {
     
     #pacientes;
@@ -19,13 +19,25 @@ class CadastroDePacientes {
  
     }
 
+    //retorna o nome a data de nacimento dos pacientes. Utilizada para criar um objeto consulta.
+    pacienteNomeDataNasc(cpf){
+        let pacientes = this.pacientesCadastro;
+        for(let i = 0; i < pacientes.length; i++){
+            if(pacientes[i].cpf === cpf){
+                let nome = pacientes[i].nome;
+                let dataNascimento = pacientes[i].dataNascimento;
+                return {nome, dataNascimento};
+            }
+        }
+    }
+
 
     pacientesCadastrados() {
         const pacientes = this.pacientesCadastro;
         return pacientes;
     }
 
-
+    // Retorna o id do paciente no array de pacientes da agenda. Usada para cancelar agendamento e validações.
     buscarPaciente(cpf) {
         const pacientes = this.pacientesCadastro;
         for (let i = 0; i < pacientes.length; i++) {
@@ -39,7 +51,7 @@ class CadastroDePacientes {
     deletarPaciente(cpf) {
         //Só chegar aqui se passar das validações. As validações são feitas assim que o usuário envia uma entrada.
         let paciente_id = this.buscarPaciente(cpf);
-        //Agenda.deletarConsultasPaciente(cpf);
+        agenda.deletarConsultasPaciente(cpf);
         this.#pacientes.splice(paciente_id, 1);
     }
 

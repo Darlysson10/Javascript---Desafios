@@ -3,7 +3,7 @@ const agenda = require('./Agenda');
 class ValidacaoExclusaoPaciente {
    
     static validacaoExclusaoPaciente(cpf) {
-        consultas_futuras = agenda.consultasFuturasPaciente(cpf);
+        let consultas_futuras = agenda.consultasFuturasPaciente(cpf);
         let resultados = [];
         if (consultas_futuras.length > 0) {
              resultados.push(false);// retornando false, não apague o paciente

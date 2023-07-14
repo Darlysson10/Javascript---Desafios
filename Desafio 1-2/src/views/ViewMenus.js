@@ -1,4 +1,5 @@
 class ViewMenus {
+    // Exibição dos menus
     static menuPrincipal() {
         console.log("Menu Principal");
         console.log("1 - Cadastro de Paciente");

@@ -1,5 +1,7 @@
+const ValidacaoDataHora = require('./ValidacaoDataHora');
+    // A classe Agenda é responsável por armazenar as consultas agendadas. Ela deve ter um método para agendar uma nova consulta e outros para listar as consultas de um paciente, listar todas as consultas em um determinado período e cancelar uma consulta.
 class Agenda {
-    
+
     #consultas;
     
     constructor() {
@@ -9,10 +11,14 @@ class Agenda {
     agendarConsulta(consulta) {
         this.#consultas.push(consulta);
     }
-
-    buscarConsulta(cpf, data, horaInicial) { // Retorna o id da consulta no array de consultas da agenda.
+    //Função que retorna o id da consulta no array de consultas da agenda. Usada para cancelar agendamento e validações.
+    buscarConsulta(cpf, data, horaInicial) { 
         const consultasAgendadas = this.#consultas;
+        if (consultasAgendadas.length === 0) {
+            return -1;
+        }
         for (let i = 0; i < consultasAgendadas.length; i++) {
+            
             if (this.#consultas[i].cpf_paciente == cpf && this.#consultas[i].data == data && this.#consultas[i].horaInicial == horaInicial) {
                 return i;
             }
@@ -20,12 +26,13 @@ class Agenda {
         return undefined;
     }
 
+    // Função que retorna as consultas futuras. Utilizada para validação da exclusão de pacientes e também para listá-las quando solicitado.
     consultasFuturasPaciente(cpf) {
         let consultas = this.#consultas;
         let consultas_futuras = [];
         for (let i = 0; i < consultas.length; i++) {
-            if (consultas[i].cpf_paciente == cpf) {
-                if (ValidacaoDataHora.validacaoData(consultas[i].data) == true) {
+            if (consultas[i].cpf_paciente === cpf) {
+                if (ValidacaoDataHora.validacaoData(consultas[i].data)) {
                     consultas_futuras.push(consultas[i]);
                 }
             }
@@ -33,6 +40,7 @@ class Agenda {
         return consultas_futuras;
     }
 
+    // Função que retorna as consultas passadas. 
     consultasPassadasPaciente(cpf) {
         let consultas = this.#consultas;
         let consultas_passadas = [];
@@ -46,11 +54,13 @@ class Agenda {
         return consultas_passadas;
     }
 
+    // Cancela um agendamento com o método splice, que remove o elemento do array.
     cancelarAgendamento(cpf, data, horaInicial) {
         let consulta_id = this.buscarConsulta(cpf, data, horaInicial);
         this.#consultas.splice(consulta_id, 1);
     }
 
+    // Função que cancela todos os agendamentos de um paciente. Utilizada para a exclusão de pacientes.
     deletarConsultasPaciente(cpf) {
         let consultas = this.consultasPassadasPaciente(cpf);
         for (let i = 0; i < consultas.length; i++) {

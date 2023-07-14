@@ -15,6 +15,7 @@ class ControllerCadastro {
     static ControllerCadastroPaciente(){
         const ControllerMenus = require('./ControllerMenus');
         let opcao = InputMenus.menuCadastroPaciente();
+        // Lida com as opções escolhidas no menu de cadastro, chamadno os controllers correspondentes.
         switch (opcao) {
             case 1:
                 this.ControllerCadastrarPaciente();
@@ -37,44 +38,44 @@ class ControllerCadastro {
     }
 }
     static ControllerCadastrarPaciente(){
-        let dadosPaciente = InputMenus.menuCadastrarPaciente();
-        dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataInput(dadosPaciente.dataNascimento);
-        let idade = Paciente.calcularIdade(dadosPaciente.dataNascimento);
-        let resultadoValidacao = ValidacaoCadastroPaciente.validacaoPaciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade);
-        if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) {
-            dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataOutput(dadosPaciente.dataNascimento);
-            idade = Math.floor(idade);
-            const paciente = new Paciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade);
-            cadastroDePacientes.cadastrarPaciente(paciente);
-            ViewValidacoes.menssagemSucessoPaciente();
-            this.ControllerCadastroPaciente();
+        let dadosPaciente = InputMenus.menuCadastrarPaciente(); // recebe os dados do paciente
+        dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataInput(dadosPaciente.dataNascimento); // formata a data de nascimento
+        let idade = Paciente.calcularIdade(dadosPaciente.dataNascimento); // calcula a idade
+        let resultadoValidacao = ValidacaoCadastroPaciente.validacaoPaciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade); // valida os dados do paciente
+        if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se os dados forem válidos, cadastra o paciente
+            dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataOutput(dadosPaciente.dataNascimento); // formata a data de nascimento para o padrão dd/mm/aaaa
+            idade = Math.floor(idade); // arredonda a idade, pois o cálculo retorna um número decimal
+            const paciente = new Paciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade); // cria o objeto paciente
+            cadastroDePacientes.cadastrarPaciente(paciente); // cadastra o paciente
+            ViewValidacoes.menssagemSucessoPaciente(); // exibe mensagem de sucesso
+            this.ControllerCadastroPaciente(); // retorna ao menu de cadastro
         }
         else {
-            ViewValidacoes.mensagemErroCadastroPaciente(resultadoValidacao);
-            this.ControllerCadastroPaciente();
+            ViewValidacoes.mensagemErroCadastroPaciente(resultadoValidacao); // exibe mensagem de erro
+            this.ControllerCadastroPaciente(); // retorna ao menu de cadastro
         }
    }
 
-    static ControllerExcluirPaciente(){
-        let cpf = InputMenus.menuExcluirPaciente();
-        let resultadoValidacao = ValidacaoExclusaoPaciente.validacaoExclusaoPaciente(cpf);
-        if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) {
-            cadastroDePacientes.deletarPaciente(cpf);
-            ViewValidacoes.mensagemSucessoExclusao();
-            this.ControllerCadastroPaciente();
+    static ControllerExcluirPaciente(){ // exclui o paciente
+        let cpf = InputMenus.menuExcluirPaciente(); // recebe o cpf do paciente
+        let resultadoValidacao = ValidacaoExclusaoPaciente.validacaoExclusaoPaciente(cpf); // valida o cpf
+        if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se o cpf for válido, exclui o paciente
+            cadastroDePacientes.deletarPaciente(cpf); // Função para excluir o paciente
+            ViewValidacoes.mensagemSucessoExclusao(); // exibe mensagem de sucesso
+            this.ControllerCadastroPaciente(); // retorna ao menu de cadastro
         }
         else {
-            ViewValidacoes.mensagemErroExclusao(resultadoValidacao);
-            this.ControllerCadastroPaciente();
+            ViewValidacoes.mensagemErroExclusao(resultadoValidacao); // exibe mensagem de erro
+            this.ControllerCadastroPaciente(); // retorna ao menu de cadastro
         }
     }
 
-    static ControllerListarPacientesCPF(){
+    static ControllerListarPacientesCPF(){ // lista os pacientes por cpf
         ViewListagem.listarPacientesCPF();
         this.ControllerCadastroPaciente();
     }
 
-    static ControllerListarPacientesNome(){
+    static ControllerListarPacientesNome(){ // lista os pacientes por nome
         ViewListagem.listarPacientesNome();
         this.ControllerCadastroPaciente();
     }

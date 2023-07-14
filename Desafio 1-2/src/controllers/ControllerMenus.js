@@ -4,6 +4,7 @@ const InputMenus = require('../views/InputMenus');
 
 class ControllerMenus {
     static ControllerMainMenu() {
+        // Lida com os casos de entrada do menu principal, chamando os controllers correspondentes
         let opcao = InputMenus.mainMenu();
         switch (opcao) {
             case 1:

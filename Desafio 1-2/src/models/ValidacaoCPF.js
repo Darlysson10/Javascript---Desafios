@@ -2,6 +2,7 @@ const cadastroDePacientes = require('../models/CadastroDePacientes');
 class ValidacaoCPF {
 
 
+   //Verifica se o tamanho do cpf é 11.
     static validacaoTamanhoCPF(cpf) {
         if (cpf.length === 11) {
             return true;
@@ -21,7 +22,7 @@ class ValidacaoCPF {
 
     }
 
-
+    // Validação co CPF módulo 11 conforme o anexo no desafio
     static validacaoDigitosCPF(cpf) {
         let soma = 0;
         let resto;
@@ -54,13 +55,17 @@ class ValidacaoCPF {
         return true;
 
     }
-
+    // Verifica se o cpf já está cadastrado no sistema. 
     static validacaoCPFExistente(cpf) {
+       // Atribui o array de pacientes cadastrados a uma variável.
         const pacientes = cadastroDePacientes.pacientesCadastrados();
+        // Se não houver pacientes cadastrados, retorna false.
         if (pacientes.length === 0) {
             return false;
         }
+        // Se houver pacientes cadastrados, verifica se o cpf já está cadastrado.
         let paciente_id = cadastroDePacientes.buscarPaciente(cpf);
+        // Se o cpf não estiver cadastrado, retorna false.
         if (paciente_id === undefined) {
             return false;
         }
@@ -68,6 +73,7 @@ class ValidacaoCPF {
     }
 
     static validacaoCPF(cpf) {
+        // Verificação geral do CPF. Utilizada para validar o CPF no cadastro de pacientes e no agendamento de consultas.
         if (this.validacaoCPFExistente(cpf) || !this.validacaoTamanhoCPF(cpf) || !this.validacaoDigitosIguaisCPF(cpf) || !this.validacaoDigitosCPF(cpf)) {
             return false;
         } 

@@ -1,7 +1,7 @@
 const ViewMenus = require('../views/ViewMenus');
 const ViewListagem = require('../views/ViewListagem');
 const prompt = require('prompt-sync')({ sigint: true });
-
+// Classe para entrada de dados dos menus.
 class InputMenus {
         static mainMenu() {
             ViewMenus.menuPrincipal();
