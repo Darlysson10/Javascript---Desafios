@@ -13,7 +13,7 @@ class ViewValidacoes {
             console.log("Erro: Data de nascimento inválida. O paciente deve ter pelo menos 13 anos.");
         }
         if (resultadoValidacao[2] === false) {
-            console.log("Erro: CPF inválido.");
+            console.log("Erro: CPF inválido ou já existe no cadastro.");
         }
         console.log("Tente novamente.");
         

@@ -17,7 +17,8 @@ class ValidacaoDataHora {
     // // Formata a hora de saída para HH:mm.
     static formatarHoraOutput(hora) {
         const formato = 'HH:mm';
-        return hora.toFormat(formato);
+        const horaFormatada = DateTime.fromFormat(hora, "HHmm");
+        return horaFormatada.toFormat(formato);
     }
 
     // Subtração das horas para obtenção do tempo de consulta
