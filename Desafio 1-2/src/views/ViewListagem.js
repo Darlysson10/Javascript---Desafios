@@ -22,7 +22,7 @@ class ViewListagem {
     static listarAgendamentosPaciente(cpf) {
         let consultas = agenda.consultasFuturasPaciente(cpf);
         for (let i = 0; i < consultas.length; i++) {
-            console.log("Agendado para:"+ consultas[i].data + "\n" + consultas[i].horaInicial + " às " + consultas[i].horaFinal);
+            console.log("Agendado para:"+ consultas[i].data + " das " + consultas[i].horaInicial + " às " + consultas[i].horaFinal);
         }
     }
     

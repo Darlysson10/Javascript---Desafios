@@ -22,7 +22,7 @@ class ValidacaoCPF {
 
     }
 
-    // Validação co CPF módulo 11 conforme o anexo no desafio
+    // Validação do CPF módulo 11 conforme o anexo no desafio
     static validacaoDigitosCPF(cpf) {
         let soma = 0;
         let resto;

@@ -32,9 +32,8 @@ class Agenda {
         let consultas_futuras = [];
         for (let i = 0; i < consultas.length; i++) {
             if (consultas[i].cpf_paciente === cpf) {
-                if (ValidacaoDataHora.validacaoData(consultas[i].data)) {
-                    consultas_futuras.push(consultas[i]);
-                }
+                consultas_futuras.push(consultas[i]);
+    
             }
         }
         return consultas_futuras;
@@ -46,9 +45,8 @@ class Agenda {
         let consultas_passadas = [];
         for (let i = 0; i < consultas.length; i++) {
             if (consultas[i].cpf_paciente == cpf) {
-                if (ValidacaoDataHora.validacaoData(consultas[i].data) == false) {
-                    consultas_passadas.push(consultas[i]);
-                }
+                consultas_passadas.push(consultas[i]);
+                
             }
         }
         return consultas_passadas;

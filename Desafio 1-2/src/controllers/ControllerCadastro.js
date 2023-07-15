@@ -1,6 +1,5 @@
 
 const Paciente = require('../models/Paciente');
-const cadastroDePacientes = require('../models/CadastroDePacientes');
 const ViewListagem = require('../views/ViewListagem');
 const InputMenus = require('../views/InputMenus');
 const ValidacaoCadastroPaciente = require('../models/ValidacaoCadastro');
@@ -8,11 +7,12 @@ const ValidacaoExclusaoPaciente = require('../models/ValidacaoExclusaoPaciente')
 const ViewValidacoes = require('../views/ViewValidacaoes');
 const ValidacaoDataHora = require('../models/ValidacaoDataHora');
 const ValidacaoResultados = require('../models/ValidacaoResultados');
-const prompt = require('prompt-sync')({ sigint: true });
+const cadastroDePacientes = require('../models/CadastroDePacientes');
 
 class ControllerCadastro {
-   
+    
     static ControllerCadastroPaciente(){
+        
         const ControllerMenus = require('./ControllerMenus');
         let opcao = InputMenus.menuCadastroPaciente();
         // Lida com as opções escolhidas no menu de cadastro, chamadno os controllers correspondentes.

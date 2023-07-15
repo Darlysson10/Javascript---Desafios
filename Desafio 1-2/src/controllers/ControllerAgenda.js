@@ -45,7 +45,7 @@ class ControllerAgenda {
         }
         else {
             ViewValidacaoes.mensagemErroAgendamento(resultadoValidacao);
-            this.ControllerAgendarConsulta();
+            this.ControllerMenuAgenda();
         }
     }
 
