@@ -22,3 +22,4 @@ function ValidatorName() {
         return false;
     }
 }
+module.exports = ValidatorName;
