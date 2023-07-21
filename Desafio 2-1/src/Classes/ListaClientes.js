@@ -3,18 +3,14 @@ class ListaClientes {
     #dadosInvalidos = [];
     constructor() {
         this.#clientes = [];
-        this.#dadosInvalidos = [];
+        
     }
 
     inserir(cliente) {
         this.#clientes.push(cliente);
     }
 
-    inserirInvalido(erro) {
-        this.#dadosInvalidos.push(erro);
-    }
-
-    get lista() {
+    get lista() { // Usar yield
         return this.#clientes;
     }
 
@@ -22,7 +18,7 @@ class ListaClientes {
         return this.#dadosInvalidos || [];
     }
 
-    listar() {
+    listar() { // Colocar isso em outro módulo
         
         
         // for (let i = 0; i < this.#clientes.length; i++) {

@@ -5,6 +5,7 @@ class Cliente {
     #dt_nascimento;
     #renda_mensal;
     #estado_civil;
+    #dadosInvalidos;
     
     constructor(nome, cpf, dt_nascimento, renda_mensal, estado_civil){
         this.#nome = nome;
@@ -12,6 +13,7 @@ class Cliente {
         this.#dt_nascimento = dt_nascimento;
         this.#renda_mensal = renda_mensal;
         this.#estado_civil = estado_civil;
+        this.#dadosInvalidos = [];
     }
 
     get nome(){
@@ -32,6 +34,10 @@ class Cliente {
 
     get estado_civil(){
         return this.#estado_civil;
+    }
+
+    inserirInvalido(erro) {
+        this.#dadosInvalidos.push(erro);
     }
    
 }
