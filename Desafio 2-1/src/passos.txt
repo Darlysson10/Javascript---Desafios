@@ -1,4 +1,0 @@
-tecnologia - ler arquivo json
-negócio - validar objeto json
-tecnologia - escrever arquivo json, entregar os erros
-mudar tudo para classe - fazer depois que estiver funcionando
