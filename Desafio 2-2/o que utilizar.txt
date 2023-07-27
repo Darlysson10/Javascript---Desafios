@@ -1,0 +1,4 @@
+- Promisses, async, await
+- Typescript
+- Erro na comunicação com a API: deve ser apresentada a mensagem de erro correspondente.
+- Arrow funcions
