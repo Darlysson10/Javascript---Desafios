@@ -1,5 +1,6 @@
 import ValidaCliente from '../Classes/ValidaCliente.js';
 //Pega os dados inválidos retornados na classe ValidacaoCliente e retorna um array com os dados inválidos para serem enviados ao json de saída
+// Deveria pensar nisso como uma classe também
 function GetInvalidData(data) {
     let clientesInvalidos = [];
     let clientes = data;

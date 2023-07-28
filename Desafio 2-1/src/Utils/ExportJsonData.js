@@ -3,6 +3,7 @@ import fs from 'fs';
 import GetInvalidData from './GetInvalidData.js';
 import path from 'path';
 // Responsável por exportar os dados inválidos para um arquivo JSON no formato especificado
+// Deveria pensar nisso como uma classe também
 function ExportJsonData(data){
     
     const pasta = path.resolve('Json');

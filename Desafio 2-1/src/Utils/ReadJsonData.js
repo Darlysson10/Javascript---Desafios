@@ -1,5 +1,6 @@
 import fs from 'fs';
 import ValidacaoArquivo from '../Classes/ValidacaoArquivo.js';
+// Deveria pensar nisso como uma classe também
 function ReadJsonData (){
     const arquivoEntrada = process.argv[2]; // Pega o nome do arquivo de entrada pelo comando
     let clientes = [];
@@ -10,6 +11,7 @@ function ReadJsonData (){
     }
     try {
         clientes = JSON.parse(fs.readFileSync(arquivoEntrada)); // Cria um array de clientes com os dados do arquivo de entrada
+        //Deveria separar a leitura do arquivo com a transformação dos json
     }
     catch (err) {
         console.log('Erro ao ler arquivo de entrada!');

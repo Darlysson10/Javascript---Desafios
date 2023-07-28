@@ -1,12 +1,15 @@
 class ValidacaoArquivo {
+    
+    #arquivo;
+    
     constructor(arquivo) {
-        this.arquivo = arquivo;
+        this.#arquivo = arquivo;
     }
     validaArquivo() {
-        if (!this.arquivo) {
+        if (!this.#arquivo) {
             return false;
         }
-        if (!this.arquivo instanceof Array) {
+        if (!this.#arquivo instanceof Array) {
             return false;
         }
         return true;
