@@ -3,12 +3,13 @@ import ValidacaoArquivo from '../Classes/ValidacaoArquivo.js';
 import ReadJsonError from './ReadJsonError.js';
 // Deveria pensar nisso como uma classe também
 function ReadJsonData() {
-    const arquivoEntrada = process.argv[2];
+    const arquivoEntrada = process.argv[2]; // deveria estar separado em outro arquivo
     let clientes = [];
     let validacaoArquivo = new ValidacaoArquivo(arquivoEntrada); // Pega o nome do arquivo de entrada pelo comando
     
+    //controle de validação de arquivo deveria estar em outro lugar
     if (!validacaoArquivo.validaArquivo()) {
-      console.log('Arquivo inválido!');
+      throw new ReadJsonError('Arquivo de entrada inválido!');
     }
   
     try {
