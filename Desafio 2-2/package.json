@@ -11,7 +11,6 @@
   },
   "keywords": [],
   "author": "",
-
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.4.5",
@@ -19,5 +18,8 @@
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
   }
 }
