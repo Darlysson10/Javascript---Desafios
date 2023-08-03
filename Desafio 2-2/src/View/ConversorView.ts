@@ -11,7 +11,7 @@ export class ConversorView {
         this.output = new Output();
     }
 
-    public showMenu(): void {
+    public async showMenu(): Promise<void> {
         
         for(; ;){
             this.output.writeLine("Bem vindo ao conversor de moedas");
@@ -33,7 +33,7 @@ export class ConversorView {
             
             const valor: number = this.input.readNumber("Digite o valor a ser convertido: ");
             const conversorController = new ConversorController(moedaOrigem, moedaDestino, valor);
-            const resultado: number = conversorController.converter();
+            const resultado = await conversorController.converter();
             this.output.writeLine(`O valor convertido é: ${resultado}`);
             
         }

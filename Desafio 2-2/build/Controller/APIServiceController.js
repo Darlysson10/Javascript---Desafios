@@ -8,31 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.APIServiceController = void 0;
-const fetch = require('node-fetch');
-const { Response } = require('node-fetch');
+const axios_1 = __importDefault(require("axios"));
 class APIServiceController {
-    getJsonData(response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = yield response.json();
-            if (this.isConversionData(data)) {
-                return data;
-            }
-            else {
-                throw new Error('Dados de conversão inválidos');
-            }
-        });
-    }
-    isConversionData(data) {
-        var _a;
-        return typeof ((_a = data.info) === null || _a === void 0 ? void 0 : _a.rate) === 'number';
-    }
-    getConversionData(moedaOrigem, moedaDestino, valor) {
+    getAPIdata(moedaOrigem, moedaDestino, valor) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `https://api.exchangerate.host/convert?from=${moedaOrigem}&to=${moedaDestino}&amount=${valor}`;
-            const response = yield fetch(url);
-            return this.getJsonData(response);
+            try {
+                const response = yield axios_1.default.get(url);
+                const { result } = response.data;
+                return result;
+            }
+            catch (error) {
+                throw new Error('Erro ao converter moedas');
+            }
         });
     }
 }

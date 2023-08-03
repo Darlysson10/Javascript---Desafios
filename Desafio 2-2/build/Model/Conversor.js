@@ -31,22 +31,16 @@ class Conversor {
     getTaxa() {
         return this.taxa;
     }
-    setTaxa(taxa) {
-        this.taxa = taxa;
-    }
     converter() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.apiService.getConversionData(this.moedaOrigem, this.moedaDestino, this.valor);
-                this.setTaxa(data.info.rate);
+                const data = yield this.apiService.getAPIdata(this.moedaOrigem, this.moedaDestino, this.valor);
+                return data;
             }
             catch (error) {
                 throw new Error('Erro ao converter moedas'); // TODO: criar uma classe erros, o throw irá apenas retornar um código erro que está definido na classe erros
             }
         });
-    }
-    calcularConversao() {
-        return this.valor * this.taxa;
     }
 }
 exports.Conversor = Conversor;

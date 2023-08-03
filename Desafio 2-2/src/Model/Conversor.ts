@@ -31,25 +31,18 @@ export class Conversor implements ConversorInterface {
       return this.taxa;
     }
   
-    private setTaxa(taxa: number): void {
-      this.taxa = taxa;
-    }
 
-    public async converter(): Promise<void> {
+    public async converter(): Promise<number> {
       try {
-        const data = await this.apiService.getConversionData(
+        const data = await this.apiService.getAPIdata(
           this.moedaOrigem,
           this.moedaDestino,
           this.valor
         );
-  
-        this.setTaxa(data.info.rate);
+        return data;
       } catch (error) {
         throw new Error('Erro ao converter moedas'); // TODO: criar uma classe erros, o throw irá apenas retornar um código erro que está definido na classe erros
       }
     }
   
-    public calcularConversao(): number {
-      return this.valor * this.taxa;
-    }
 }

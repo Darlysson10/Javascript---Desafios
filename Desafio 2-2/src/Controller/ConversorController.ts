@@ -12,10 +12,10 @@ export class ConversorController{
         this.valor = valor;
     }
         
-    public converter(): number{
+    public async converter(): Promise<number> {
         const conversor = new Conversor(this.origem, this.destino, this.valor);
-        conversor.converter();
-        return conversor.calcularConversao();
+        const resultado = await conversor.converter();
+        return resultado;
     }
 
     

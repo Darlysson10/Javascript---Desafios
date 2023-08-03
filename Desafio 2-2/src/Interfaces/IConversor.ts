@@ -3,6 +3,5 @@ export interface ConversorInterface {
     getMoedaDestino(): string;
     getValor(): number;
     getTaxa(): number;
-    converter(): Promise<void>;
-    calcularConversao(): number;
+    converter(): Promise<number>;
   }
