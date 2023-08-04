@@ -33,7 +33,8 @@ class APIService {
             try {
                 const response = yield axios_1.default.get(url);
                 const { result } = response.data;
-                return result;
+                const taxa = response.data.info.rate;
+                return { result, taxa };
             }
             catch (error) {
                 throw new Error('Erro na comunicação com a API');

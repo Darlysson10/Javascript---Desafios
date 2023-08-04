@@ -42,7 +42,7 @@ export class ConversorPresenter implements IConversorPresenter {
             }
             else {
                  // Exibe o resultado da conversão
-                this.conversorView.showResult(result, moedaDestino);
+                this.conversorView.showResult(result, conversorController.getTaxa(),  moedaDestino);
             }
 
 

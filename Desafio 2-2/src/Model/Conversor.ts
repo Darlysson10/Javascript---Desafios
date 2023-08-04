@@ -10,19 +10,24 @@ export class Conversor implements ConversorInterface {
     private moedaOrigem: string;
     private moedaDestino: string;
     private valor: number;
+    private taxa: number;
     private apiService: APIService;
+    
 
         /**
      * Construtor da classe Conversor.
      * @param {string} moedaOrigem - A moeda de origem para a conversão.
      * @param {string} moedaDestino - A moeda de destino para a conversão.
      * @param {number} valor - O valor a ser convertido.
+     * @param {APIService} apiService - O serviço de comunicação com a API externa.
+     * @param {number} taxa - A taxa de conversão.
      */
 
     constructor(moedaOrigem: string, moedaDestino: string, valor: number) {
       this.moedaOrigem = moedaOrigem;
       this.moedaDestino = moedaDestino;
       this.valor = valor;
+      this.taxa = 0;
       this.apiService = new APIService();
     }
      /**
@@ -51,6 +56,14 @@ export class Conversor implements ConversorInterface {
     public getValor(): number {
       return this.valor;
     }
+
+    public setTaxa(taxa: number): void {
+      this.taxa = taxa;
+    }
+
+    public getTaxa(): number {
+      return this.taxa;
+    }
         /**
      * Verifica se as moedas de origem e destino são válidas. Utiliza o arquivo Currencies.json para verificar.
      * @returns {boolean} True se as moedas são válidas, False caso contrário.
@@ -63,6 +76,15 @@ export class Conversor implements ConversorInterface {
       return currencies[this.moedaDestino] !== undefined && currencies[this.moedaOrigem] !== undefined;
     
     }
+
+    public moedasIguais(): boolean {
+      return this.moedaOrigem === this.moedaDestino;
+    }
+
+    public isValidCurrencySize(): boolean {
+      return this.moedaOrigem.length === 3 && this.moedaDestino.length === 3;
+    }
+
     /**
      * Verifica se o valor é válido (maior que  zero).
      * @returns {boolean} True se o valor é válido, False caso contrário.
@@ -76,12 +98,13 @@ export class Conversor implements ConversorInterface {
      * @returns {Promise<number>} Uma promise contendo o valor convertido.
      */
     public async converter(): Promise<number> {
-      const data = await this.apiService.getAPIdata(
+      const {result, taxa} = await this.apiService.getAPIdata(
         this.moedaOrigem,
         this.moedaDestino,
         this.valor
       );
-      return data;
+      this.setTaxa(taxa);
+      return result;
       
     }
   

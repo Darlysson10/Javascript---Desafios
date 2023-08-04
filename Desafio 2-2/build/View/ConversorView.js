@@ -42,8 +42,9 @@ class ConversorView {
  * @param {number} result - O valor convertido.
  * @param {string} moedaDestino - A moeda de destino para a conversão.
  */
-    showResult(result, moedaDestino) {
+    showResult(result, taxa, moedaDestino) {
         this.output.writeLine(`O valor convertido é ${result} ${moedaDestino}`);
+        this.output.writeLine(`A taxa de conversão é ${taxa}`);
     }
     /**
  * Obtém as entradas do usuário para a conversão de moedas.

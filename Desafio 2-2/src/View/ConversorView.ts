@@ -48,8 +48,10 @@ export class ConversorView implements IConversorView {
      * @param {number} result - O valor convertido.
      * @param {string} moedaDestino - A moeda de destino para a conversão.
      */
-    public showResult (result: number, moedaDestino: string): void{
+    public showResult (result: number, taxa: number, moedaDestino: string): void{
         this.output.writeLine(`O valor convertido é ${result} ${moedaDestino}`);
+        this.output.writeLine(`A taxa de conversão é ${taxa}`);
+
     }
 
         /**

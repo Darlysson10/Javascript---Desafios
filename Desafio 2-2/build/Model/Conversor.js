@@ -27,6 +27,7 @@ class Conversor {
         this.moedaOrigem = moedaOrigem;
         this.moedaDestino = moedaDestino;
         this.valor = valor;
+        this.taxa = 0;
         this.apiService = new APIService_1.APIService();
     }
     /**
@@ -50,6 +51,12 @@ class Conversor {
     getValor() {
         return this.valor;
     }
+    setTaxa(taxa) {
+        this.taxa = taxa;
+    }
+    getTaxa() {
+        return this.taxa;
+    }
     /**
  * Verifica se as moedas de origem e destino são válidas. Utiliza o arquivo Currencies.json para verificar.
  * @returns {boolean} True se as moedas são válidas, False caso contrário.
@@ -58,6 +65,12 @@ class Conversor {
         const jsonCurrencyLoader = new JsonCurrencyloader_1.JsonCurrencyLoader();
         const currencies = jsonCurrencyLoader.getCurrencies();
         return currencies[this.moedaDestino] !== undefined && currencies[this.moedaOrigem] !== undefined;
+    }
+    moedasIguais() {
+        return this.moedaOrigem === this.moedaDestino;
+    }
+    isValidCurrencySize() {
+        return this.moedaOrigem.length === 3 && this.moedaDestino.length === 3;
     }
     /**
      * Verifica se o valor é válido (maior que  zero).
@@ -72,8 +85,9 @@ class Conversor {
  */
     converter() {
         return __awaiter(this, void 0, void 0, function* () {
-            const data = yield this.apiService.getAPIdata(this.moedaOrigem, this.moedaDestino, this.valor);
-            return data;
+            const { result, taxa } = yield this.apiService.getAPIdata(this.moedaOrigem, this.moedaDestino, this.valor);
+            this.setTaxa(taxa);
+            return result;
         });
     }
 }

@@ -12,6 +12,7 @@ export class ConversorController implements IConverterController{
     private origem :string;
     private destino :string;
     private valor :number;
+    private taxa :number;
 
             /**
      * Construtor da classe ConversorController.
@@ -24,6 +25,7 @@ export class ConversorController implements IConverterController{
         this.origem = origem;
         this.destino = destino;
         this.valor = valor;
+        this.taxa = 0;
     }
 
         /**
@@ -31,6 +33,13 @@ export class ConversorController implements IConverterController{
      * @param {Conversor} conversor - O objeto Conversor contendo as informações da conversão.
      * @returns {Object} Um objeto contendo o status da operação e o código do erro, caso ocorra.
      */
+    private setTaxa(taxa: number): void {
+        this.taxa = taxa;
+    }
+
+    public getTaxa(): number {
+        return this.taxa;
+    }
 
     private canConvert(conversor: Conversor): any{
         if(!conversor.isValidCurrency()){
@@ -51,6 +60,15 @@ export class ConversorController implements IConverterController{
             status: OperationStatus.SUCCESS
         }
     }
+
+    private roundValues(resultado: number, taxa: number): {resultado: number, taxa: number} {
+
+        // Arredondar o resultado para 2 casas decimais
+        resultado = Math.round(resultado * 100) / 100;
+        // arredondar a taxa para 6 casas decimais
+        taxa = Math.round(taxa * 1000000) / 1000000;
+        return {resultado, taxa};
+    }
     
        /**
      * Realiza a conversão de moedas.
@@ -64,7 +82,15 @@ export class ConversorController implements IConverterController{
         if (canConvert.status === OperationStatus.FAILURE) {
             return {status: canConvert.status, error: canConvert.error}
         }
-        const resultado = await conversor.converter();
+        let resultado = await conversor.converter();
+        let taxa = conversor.getTaxa();
+
+        // pega os resulstados arredondados da função roundvalues
+        const {resultado: roundedResult, taxa: roundedTaxa} = this.roundValues(resultado, taxa);
+        resultado = roundedResult;
+        taxa = roundedTaxa;
+        
+        this.setTaxa(taxa);
         return resultado;
 
     }
