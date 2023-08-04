@@ -22,6 +22,8 @@ class Conversor {
  * @param {string} moedaOrigem - A moeda de origem para a conversão.
  * @param {string} moedaDestino - A moeda de destino para a conversão.
  * @param {number} valor - O valor a ser convertido.
+ * @param {APIService} apiService - O serviço de comunicação com a API externa.
+ * @param {number} taxa - A taxa de conversão.
  */
     constructor(moedaOrigem, moedaDestino, valor) {
         this.moedaOrigem = moedaOrigem;
