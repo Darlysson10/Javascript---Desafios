@@ -40,7 +40,7 @@ export class Conversor implements ConversorInterface {
     }
     
     /**
-     * Obtém a moeda de destino para a conversão.
+     * Obtém a moeda de destino para fazer a conversão.
      * @returns {string} A moeda de destino.
      */
 
