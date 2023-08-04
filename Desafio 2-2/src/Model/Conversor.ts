@@ -57,7 +57,7 @@ export class Conversor implements ConversorInterface {
       return this.valor;
     }
 
-    public setTaxa(taxa: number): void {
+    private setTaxa(taxa: number): void {
       this.taxa = taxa;
     }
 

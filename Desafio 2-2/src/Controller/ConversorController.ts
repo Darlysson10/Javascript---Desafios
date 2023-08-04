@@ -56,6 +56,10 @@ export class ConversorController implements IConverterController{
             }
         }
 
+        
+
+
+
         return {
             status: OperationStatus.SUCCESS
         }
