@@ -1,18 +1,17 @@
-import { APIServiceController } from '../Controller/APIServiceController';
+import { APIService } from './APIService';
 import { ConversorInterface } from '../Interfaces/IConversor';
+import { JsonCurrencyLoader } from '../Utils/JsonCurrencyloader';
 export class Conversor implements ConversorInterface {
     private moedaOrigem: string;
     private moedaDestino: string;
     private valor: number;
-    private taxa: number;
-    private apiService: APIServiceController;
+    private apiService: APIService;
   
     constructor(moedaOrigem: string, moedaDestino: string, valor: number) {
       this.moedaOrigem = moedaOrigem;
       this.moedaDestino = moedaDestino;
       this.valor = valor;
-      this.taxa = 0;
-      this.apiService = new APIServiceController();
+      this.apiService = new APIService();
     }
   
     public getMoedaOrigem(): string {
@@ -26,23 +25,30 @@ export class Conversor implements ConversorInterface {
     public getValor(): number {
       return this.valor;
     }
-  
-    public getTaxa(): number {
-      return this.taxa;
+
+    public isValidCurrency(): boolean {
+      
+      const jsonCurrencyLoader = new JsonCurrencyLoader();
+      const currencies = jsonCurrencyLoader.getCurrencies();
+      return currencies[this.moedaDestino] !== undefined && currencies[this.moedaOrigem] !== undefined;
+    
     }
+
+    public isValidValue(): boolean {
+      return this.valor >= 0;
+    }
+    
+    // Colocar funções de validação aqui
   
 
     public async converter(): Promise<number> {
-      try {
-        const data = await this.apiService.getAPIdata(
-          this.moedaOrigem,
-          this.moedaDestino,
-          this.valor
-        );
-        return data;
-      } catch (error) {
-        throw new Error('Erro ao converter moedas'); // TODO: criar uma classe erros, o throw irá apenas retornar um código erro que está definido na classe erros
-      }
+      const data = await this.apiService.getAPIdata(
+        this.moedaOrigem,
+        this.moedaDestino,
+        this.valor
+      );
+      return data;
+      
     }
   
 }

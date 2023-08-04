@@ -11,15 +11,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConversorController = void 0;
 const Conversor_1 = require("../Model/Conversor");
+const operationCodes_1 = require("./operationCodes");
 class ConversorController {
     constructor(origem, destino, valor) {
         this.origem = origem;
         this.destino = destino;
         this.valor = valor;
     }
+    canConvert(conversor) {
+        if (!conversor.isValidCurrency()) {
+            return {
+                status: operationCodes_1.OperationStatus.FAILURE,
+                error: operationCodes_1.OperationErrors.INVALID_CURRENCY
+            };
+        }
+        else if (!conversor.isValidValue()) {
+            return {
+                status: operationCodes_1.OperationStatus.FAILURE,
+                error: operationCodes_1.OperationErrors.INVALID_VALUE
+            };
+        }
+        return {
+            status: operationCodes_1.OperationStatus.SUCCESS
+        };
+    }
     converter() {
         return __awaiter(this, void 0, void 0, function* () {
             const conversor = new Conversor_1.Conversor(this.origem, this.destino, this.valor);
+            const canConvert = this.canConvert(conversor);
+            if (canConvert.status === operationCodes_1.OperationStatus.FAILURE) {
+                return { status: canConvert.status, error: canConvert.error };
+            }
             const resultado = yield conversor.converter();
             return resultado;
         });

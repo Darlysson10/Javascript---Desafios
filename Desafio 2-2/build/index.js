@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ConversorView_1 = require("./View/ConversorView");
+const ConversorPresenter_1 = require("./Presenter/ConversorPresenter");
 (function () {
-    const conversorView = new ConversorView_1.ConversorView();
-    conversorView.showMenu();
+    const conversorPresenter = new ConversorPresenter_1.ConversorPresenter();
+    conversorPresenter.run();
 })();

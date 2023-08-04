@@ -1,7 +1,7 @@
 import { APIServiceInterface } from "../Interfaces/IAPIService";
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
-export class APIServiceController implements APIServiceInterface {
+export class APIService implements APIServiceInterface {
     public async getAPIdata(moedaOrigem: string, moedaDestino: string, valor: number): Promise<number> {
         const url: string = `https://api.exchangerate.host/convert?from=${moedaOrigem}&to=${moedaDestino}&amount=${valor}`;
         try {
@@ -9,7 +9,7 @@ export class APIServiceController implements APIServiceInterface {
             const { result } = response.data;
             return result;
           } catch (error) {
-            throw new Error('Erro ao converter moedas'); 
+            throw new Error('Erro na comunicação com a API'); 
           }
     }
 }

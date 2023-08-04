@@ -1,7 +1,7 @@
-import { ConversorView } from "./View/ConversorView";
+import { ConversorPresenter } from "./Presenter/ConversorPresenter";
 
 
 (function () {
-    const conversorView = new ConversorView();
-    conversorView.showMenu();
+    const conversorPresenter = new ConversorPresenter();
+    conversorPresenter.run();
 })();

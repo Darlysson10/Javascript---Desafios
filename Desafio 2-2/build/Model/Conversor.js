@@ -10,14 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Conversor = void 0;
-const APIServiceController_1 = require("../Controller/APIServiceController");
+const APIService_1 = require("./APIService");
+const JsonCurrencyloader_1 = require("../Utils/JsonCurrencyloader");
 class Conversor {
     constructor(moedaOrigem, moedaDestino, valor) {
         this.moedaOrigem = moedaOrigem;
         this.moedaDestino = moedaDestino;
         this.valor = valor;
-        this.taxa = 0;
-        this.apiService = new APIServiceController_1.APIServiceController();
+        this.apiService = new APIService_1.APIService();
     }
     getMoedaOrigem() {
         return this.moedaOrigem;
@@ -28,18 +28,19 @@ class Conversor {
     getValor() {
         return this.valor;
     }
-    getTaxa() {
-        return this.taxa;
+    isValidCurrency() {
+        const jsonCurrencyLoader = new JsonCurrencyloader_1.JsonCurrencyLoader();
+        const currencies = jsonCurrencyLoader.getCurrencies();
+        return currencies[this.moedaDestino] !== undefined && currencies[this.moedaOrigem] !== undefined;
     }
+    isValidValue() {
+        return this.valor >= 0;
+    }
+    // Colocar funções de validação aqui
     converter() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const data = yield this.apiService.getAPIdata(this.moedaOrigem, this.moedaDestino, this.valor);
-                return data;
-            }
-            catch (error) {
-                throw new Error('Erro ao converter moedas'); // TODO: criar uma classe erros, o throw irá apenas retornar um código erro que está definido na classe erros
-            }
+            const data = yield this.apiService.getAPIdata(this.moedaOrigem, this.moedaDestino, this.valor);
+            return data;
         });
     }
 }

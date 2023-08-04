@@ -12,9 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.APIServiceController = void 0;
+exports.APIService = void 0;
 const axios_1 = __importDefault(require("axios"));
-class APIServiceController {
+class APIService {
     getAPIdata(moedaOrigem, moedaDestino, valor) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `https://api.exchangerate.host/convert?from=${moedaOrigem}&to=${moedaDestino}&amount=${valor}`;
@@ -24,9 +24,9 @@ class APIServiceController {
                 return result;
             }
             catch (error) {
-                throw new Error('Erro ao converter moedas');
+                throw new Error('Erro na comunicação com a API');
             }
         });
     }
 }
-exports.APIServiceController = APIServiceController;
+exports.APIService = APIService;
