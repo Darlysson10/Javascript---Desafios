@@ -1,30 +1,60 @@
 import { APIService } from './APIService';
 import { ConversorInterface } from '../Interfaces/IConversor';
 import { JsonCurrencyLoader } from '../Utils/JsonCurrencyloader';
+
+/**
+ * Classe responsável pela realização da conversão de moedas utilizando uma API externa.
+ * Implementa a interface ConversorInterface.
+ */
 export class Conversor implements ConversorInterface {
     private moedaOrigem: string;
     private moedaDestino: string;
     private valor: number;
     private apiService: APIService;
-  
+
+        /**
+     * Construtor da classe Conversor.
+     * @param {string} moedaOrigem - A moeda de origem para a conversão.
+     * @param {string} moedaDestino - A moeda de destino para a conversão.
+     * @param {number} valor - O valor a ser convertido.
+     */
+
     constructor(moedaOrigem: string, moedaDestino: string, valor: number) {
       this.moedaOrigem = moedaOrigem;
       this.moedaDestino = moedaDestino;
       this.valor = valor;
       this.apiService = new APIService();
     }
-  
+     /**
+     * Obtém a moeda de origem para a conversão.
+     * @returns {string} A moeda de origem.
+     */
+
     public getMoedaOrigem(): string {
       return this.moedaOrigem;
     }
-  
+    
+    /**
+     * Obtém a moeda de destino para a conversão.
+     * @returns {string} A moeda de destino.
+     */
+
     public getMoedaDestino(): string {
       return this.moedaDestino;
     }
-  
+    
+    /**
+     * Obtém o valor a ser convertido.
+     * @returns {number} O valor a ser convertido.
+     */
+
     public getValor(): number {
       return this.valor;
     }
+        /**
+     * Verifica se as moedas de origem e destino são válidas. Utiliza o arquivo Currencies.json para verificar.
+     * @returns {boolean} True se as moedas são válidas, False caso contrário.
+     */
 
     public isValidCurrency(): boolean {
       
@@ -33,14 +63,18 @@ export class Conversor implements ConversorInterface {
       return currencies[this.moedaDestino] !== undefined && currencies[this.moedaOrigem] !== undefined;
     
     }
-
+    /**
+     * Verifica se o valor é válido (maior que  zero).
+     * @returns {boolean} True se o valor é válido, False caso contrário.
+     */
     public isValidValue(): boolean {
-      return this.valor >= 0;
+      return this.valor > 0;
     }
     
-    // Colocar funções de validação aqui
-  
-
+        /**
+     * Realiza a conversão de moedas utilizando a API externa.
+     * @returns {Promise<number>} Uma promise contendo o valor convertido.
+     */
     public async converter(): Promise<number> {
       const data = await this.apiService.getAPIdata(
         this.moedaOrigem,

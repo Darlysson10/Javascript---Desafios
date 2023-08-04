@@ -2,12 +2,21 @@ import { Input } from "../Utils/Input";
 import { Output } from "../Utils/Output";
 import { OperationStatus, OperationErrors } from "../Controller/operationCodes";
 import { IConversorView } from "../Interfaces/IConversorView";
+/**
+ * Classe responsável por gerenciar a interação do usuário com o conversor de moedas.
+ * Implementa a interface IConversorView.
+ */
 export class ConversorView implements IConversorView {
     
     private input: Input;
     private output: Output;
     private messages: Map<number, string>;
 
+      /**
+     * Construtor da classe ConversorView.
+     * Inicializa as instâncias de Input e Output para interagir com o usuário.
+     * Inicializa as mensagens de erro em um mapa.
+     */
     constructor(){
         this.input = new Input();
         this.output = new Output();
@@ -15,12 +24,18 @@ export class ConversorView implements IConversorView {
 
         this.setupmessages();
     }
-
+        /**
+     * Configura as mensagens de erro no mapa.
+     */
     private setupmessages(): void{
         this.messages.set(OperationErrors.INVALID_CURRENCY, "ERRO: Moeda inválida ou inexistente");
         this.messages.set(OperationErrors.INVALID_VALUE, "ERRO: Valor inválido");
     }
-
+        /**
+     * Exibe os erros ocorridos durante a conversão, se houver.
+     * @param {number} status - O status da operação (sucesso ou falha).
+     * @param {number} error - O código do erro, caso ocorra.
+     */
     public showErrors(status: number, error: number): void{
 
         if (status === OperationStatus.FAILURE) {
@@ -28,10 +43,19 @@ export class ConversorView implements IConversorView {
         }
             
     }
-
+        /**
+     * Exibe o resultado da conversão de moedas.
+     * @param {number} result - O valor convertido.
+     * @param {string} moedaDestino - A moeda de destino para a conversão.
+     */
     public showResult (result: number, moedaDestino: string): void{
         this.output.writeLine(`O valor convertido é ${result} ${moedaDestino}`);
     }
+
+        /**
+     * Obtém as entradas do usuário para a conversão de moedas.
+     * @returns {Object} Um objeto contendo a moeda de origem, a moeda de destino e o valor a ser convertido.
+     */
 
     public getInputs(): {moedaOrigem: string, moedaDestino: string, valor: number} {
         
@@ -51,7 +75,7 @@ export class ConversorView implements IConversorView {
             if (valor === 0) {
                 return {moedaOrigem:"", moedaDestino:"", valor};
             }
-
+            // Retorna as moedas em letras maiúsculas
             return {moedaOrigem: moedaOrigem.toUpperCase(), moedaDestino: moedaDestino.toUpperCase(), valor};
     }
 
