@@ -61,18 +61,34 @@ export class Conversor implements ConversorInterface {
       return this.valor;
     }
 
+    /**
+     * Define a taxa de conversão.
+     * @param {number} taxa - A taxa de conversão.
+     * @returns {void}
+     */ 
     private setTaxa(taxa: number): void {
       this.taxa = taxa;
     }
 
+    /**
+     * Obtém o valor convertido.
+     * @params {number} valorConvertido - O valor convertido.
+     */
     private setValorConvertido(valorConvertido: number): void {
       this.valorConvertido = valorConvertido;
     }
-
+    /**
+     * Obtém o valor convertido.
+     * @returns {number} O valor convertido.
+     */
     public getValorConvertido(): number {
       return this.valorConvertido;
     }
 
+    /**
+     * Obtém a taxa de conversão.
+     * @returns {number} A taxa de conversão.
+     */ 
     public getTaxa(): number {
       return this.taxa;
     }
@@ -88,7 +104,10 @@ export class Conversor implements ConversorInterface {
       return currencies[this.moedaDestino] !== undefined && currencies[this.moedaOrigem] !== undefined;
     
     }
-
+    /**
+     * Verifica se as moedas de origem e destino são iguais.
+     * @returns {boolean} True se as moedas são iguais, False caso contrário.
+     */  
     public moedasIguais(): boolean {
       return this.moedaOrigem === this.moedaDestino;
     }

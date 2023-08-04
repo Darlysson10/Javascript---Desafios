@@ -27,7 +27,7 @@ class ConversorView {
         this.messages.set(operationCodes_1.OperationErrors.INVALID_CURRENCY, "ERRO: Moeda inválida ou inexistente");
         this.messages.set(operationCodes_1.OperationErrors.INVALID_VALUE, "ERRO: Valor inválido");
         this.messages.set(operationCodes_1.OperationErrors.INVALID_CURRENCY_SIZE, "ERRO: Moeda deve ser composta por 3 caracteres");
-        this.messages.set(operationCodes_1.OperationErrors.INVALID_CURRENCY_PAIR, "ERRO: Par de moedas inválido, as moedas são iguais");
+        this.messages.set(operationCodes_1.OperationErrors.SAME_CURRENCY, "ERRO: As moedas são iguais");
     }
     /**
  * Exibe os erros ocorridos durante a conversão, se houver.

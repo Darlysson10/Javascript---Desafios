@@ -27,7 +27,7 @@ class OperationErrors {
         return 3;
     }
 
-    static get INVALID_CURRENCY_PAIR() {
+    static get SAME_CURRENCY() {
         return 4;
     }
 

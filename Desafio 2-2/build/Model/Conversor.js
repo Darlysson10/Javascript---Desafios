@@ -55,15 +55,32 @@ class Conversor {
     getValor() {
         return this.valor;
     }
+    /**
+     * Define a taxa de conversão.
+     * @param {number} taxa - A taxa de conversão.
+     * @returns {void}
+     */
     setTaxa(taxa) {
         this.taxa = taxa;
     }
+    /**
+     * Obtém o valor convertido.
+     * @params {number} valorConvertido - O valor convertido.
+     */
     setValorConvertido(valorConvertido) {
         this.valorConvertido = valorConvertido;
     }
+    /**
+     * Obtém o valor convertido.
+     * @returns {number} O valor convertido.
+     */
     getValorConvertido() {
         return this.valorConvertido;
     }
+    /**
+     * Obtém a taxa de conversão.
+     * @returns {number} A taxa de conversão.
+     */
     getTaxa() {
         return this.taxa;
     }
@@ -76,6 +93,10 @@ class Conversor {
         const currencies = jsonCurrencyLoader.getCurrencies();
         return currencies[this.moedaDestino] !== undefined && currencies[this.moedaOrigem] !== undefined;
     }
+    /**
+     * Verifica se as moedas de origem e destino são iguais.
+     * @returns {boolean} True se as moedas são iguais, False caso contrário.
+     */
     moedasIguais() {
         return this.moedaOrigem === this.moedaDestino;
     }

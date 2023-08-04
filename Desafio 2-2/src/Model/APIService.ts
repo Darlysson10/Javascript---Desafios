@@ -11,7 +11,7 @@ export class APIService implements APIServiceInterface {
      * @param {string} moedaOrigem - A moeda de origem para a conversão.
      * @param {string} moedaDestino - A moeda de destino para a conversão.
      * @param {number} valor - O valor a ser convertido.
-     * @returns {Promise<number>} Uma promise com o resultado da conversão.
+     * @returns {Promise<result: number, taxa: number>} Uma promise com o resultado da conversão.
      * @throws {Error} Lança um erro caso haja falha na comunicação com a API.
      */
 

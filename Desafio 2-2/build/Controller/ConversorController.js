@@ -17,11 +17,35 @@ const operationCodes_1 = require("./operationCodes");
  * Implementa a interface IConverterController.
  */
 class ConversorController {
+    /**
+     * Construtor da classe ConversorController.
+     * @param {string} origem - A moeda de origem para a conversão.
+     * @param {string} destino - A moeda de destino para a conversão.
+     * @param {number} valor - O valor a ser convertido.
+     * @param {Conversor} conversor - O conversor de moedas.
+     */
     constructor(origem, destino, valor) {
         this.conversor = new Conversor_1.Conversor(origem, destino, valor);
     }
+    /**
+     * Verifica se os dados informados pelo usuário são válidos.
+     * @returns {any} Um objeto com o status e o erro, caso haja falha.
+     *
+    */
     canConvert() {
-        if (!this.conversor.isValidCurrency()) {
+        if (!this.conversor.isValidCurrencySize()) {
+            return {
+                status: operationCodes_1.OperationStatus.FAILURE,
+                error: operationCodes_1.OperationErrors.INVALID_CURRENCY_SIZE
+            };
+        }
+        else if (this.conversor.moedasIguais()) {
+            return {
+                status: operationCodes_1.OperationStatus.FAILURE,
+                error: operationCodes_1.OperationErrors.SAME_CURRENCY
+            };
+        }
+        else if (!this.conversor.isValidCurrency()) {
             return {
                 status: operationCodes_1.OperationStatus.FAILURE,
                 error: operationCodes_1.OperationErrors.INVALID_CURRENCY
@@ -33,19 +57,13 @@ class ConversorController {
                 error: operationCodes_1.OperationErrors.INVALID_VALUE
             };
         }
-        else if (!this.conversor.isValidCurrencySize()) {
-            return {
-                status: operationCodes_1.OperationStatus.FAILURE,
-                error: operationCodes_1.OperationErrors.INVALID_CURRENCY_SIZE
-            };
-        }
         return {
             status: operationCodes_1.OperationStatus.SUCCESS
         };
     }
     /**
   * Realiza a conversão de moedas.
-  * @returns {Promise<number | { status: number; error: number; }>} O valor convertido ou um objeto com o status e o código do erro.
+  * @returns {Promise<{valorConvertido: number; taxa: number;  status: number; error: number; }>} Uma promise com o resultado da conversão e com o status e erro, caso haja falha.
   */
     converter() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -57,7 +75,6 @@ class ConversorController {
             let taxa = this.conversor.getTaxa();
             let valorConvertido = this.conversor.getValorConvertido();
             return { valorConvertido, taxa, status: operationCodes_1.OperationStatus.SUCCESS, error: 0 };
-            // pega os resulstados arredondados da função roundvalues
         });
     }
 }
