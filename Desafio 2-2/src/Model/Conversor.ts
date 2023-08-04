@@ -12,6 +12,7 @@ export class Conversor implements ConversorInterface {
     private valor: number;
     private taxa: number;
     private apiService: APIService;
+    private valorConvertido: number;
     
 
         /**
@@ -21,6 +22,7 @@ export class Conversor implements ConversorInterface {
      * @param {number} valor - O valor a ser convertido.
      * @param {APIService} apiService - O serviço de comunicação com a API externa.
      * @param {number} taxa - A taxa de conversão.
+     * @param {number} valorConvertido - O valor convertido.
      */
 
     constructor(moedaOrigem: string, moedaDestino: string, valor: number) {
@@ -28,7 +30,9 @@ export class Conversor implements ConversorInterface {
       this.moedaDestino = moedaDestino;
       this.valor = valor;
       this.taxa = 0;
+      this.valorConvertido = 0;
       this.apiService = new APIService();
+
     }
      /**
      * Obtém a moeda de origem para a conversão.
@@ -59,6 +63,14 @@ export class Conversor implements ConversorInterface {
 
     private setTaxa(taxa: number): void {
       this.taxa = taxa;
+    }
+
+    private setValorConvertido(valorConvertido: number): void {
+      this.valorConvertido = valorConvertido;
+    }
+
+    public getValorConvertido(): number {
+      return this.valorConvertido;
     }
 
     public getTaxa(): number {
@@ -93,18 +105,26 @@ export class Conversor implements ConversorInterface {
       return this.valor > 0;
     }
     
+    private roundValues(valorConvertido: number, taxa: number): {valorConvertido: number, taxa: number} {
+        // Arredondar o resultado para 2 casas decimais
+        valorConvertido = Math.round(valorConvertido * 100) / 100;
+        // arredondar a taxa para 6 casas decimais
+        taxa = Math.round(taxa * 1000000) / 1000000;
+        return {valorConvertido, taxa};
+     }
         /**
      * Realiza a conversão de moedas utilizando a API externa.
      * @returns {Promise<number>} Uma promise contendo o valor convertido.
      */
-    public async converter(): Promise<number> {
+    public async converter(): Promise<void> {
       const {result, taxa} = await this.apiService.getAPIdata(
         this.moedaOrigem,
         this.moedaDestino,
         this.valor
       );
-      this.setTaxa(taxa);
-      return result;
+      const {valorConvertido, taxa: taxaArredondada} = this.roundValues(result, taxa);
+      this.setTaxa(taxaArredondada);
+      this.setValorConvertido(valorConvertido);
       
     }
   

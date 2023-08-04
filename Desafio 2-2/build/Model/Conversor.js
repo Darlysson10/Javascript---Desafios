@@ -24,12 +24,14 @@ class Conversor {
  * @param {number} valor - O valor a ser convertido.
  * @param {APIService} apiService - O serviço de comunicação com a API externa.
  * @param {number} taxa - A taxa de conversão.
+ * @param {number} valorConvertido - O valor convertido.
  */
     constructor(moedaOrigem, moedaDestino, valor) {
         this.moedaOrigem = moedaOrigem;
         this.moedaDestino = moedaDestino;
         this.valor = valor;
         this.taxa = 0;
+        this.valorConvertido = 0;
         this.apiService = new APIService_1.APIService();
     }
     /**
@@ -56,6 +58,12 @@ class Conversor {
     setTaxa(taxa) {
         this.taxa = taxa;
     }
+    setValorConvertido(valorConvertido) {
+        this.valorConvertido = valorConvertido;
+    }
+    getValorConvertido() {
+        return this.valorConvertido;
+    }
     getTaxa() {
         return this.taxa;
     }
@@ -81,6 +89,13 @@ class Conversor {
     isValidValue() {
         return this.valor > 0;
     }
+    roundValues(valorConvertido, taxa) {
+        // Arredondar o resultado para 2 casas decimais
+        valorConvertido = Math.round(valorConvertido * 100) / 100;
+        // arredondar a taxa para 6 casas decimais
+        taxa = Math.round(taxa * 1000000) / 1000000;
+        return { valorConvertido, taxa };
+    }
     /**
  * Realiza a conversão de moedas utilizando a API externa.
  * @returns {Promise<number>} Uma promise contendo o valor convertido.
@@ -88,8 +103,9 @@ class Conversor {
     converter() {
         return __awaiter(this, void 0, void 0, function* () {
             const { result, taxa } = yield this.apiService.getAPIdata(this.moedaOrigem, this.moedaDestino, this.valor);
-            this.setTaxa(taxa);
-            return result;
+            const { valorConvertido, taxa: taxaArredondada } = this.roundValues(result, taxa);
+            this.setTaxa(taxaArredondada);
+            this.setValorConvertido(valorConvertido);
         });
     }
 }

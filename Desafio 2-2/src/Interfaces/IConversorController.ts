@@ -1,3 +1,3 @@
 export interface IConverterController {
-    converter(): Promise<number | { status: number; error: number; }>;
+    converter(): Promise<{valorConvertido: number; taxa: number; } | { status: number; error: number; }>;
 }

@@ -17,52 +17,31 @@ const operationCodes_1 = require("./operationCodes");
  * Implementa a interface IConverterController.
  */
 class ConversorController {
-    /**
-* Construtor da classe ConversorController.
-* @param {string} origem - A moeda de origem para a conversão.
-* @param {string} destino - A moeda de destino para a conversão.
-* @param {number} valor - O valor a ser convertido.
-*/
     constructor(origem, destino, valor) {
-        this.origem = origem;
-        this.destino = destino;
-        this.valor = valor;
-        this.taxa = 0;
+        this.conversor = new Conversor_1.Conversor(origem, destino, valor);
     }
-    /**
- * Verifica se é possível realizar a conversão da moeda.
- * @param {Conversor} conversor - O objeto Conversor contendo as informações da conversão.
- * @returns {Object} Um objeto contendo o status da operação e o código do erro, caso ocorra.
- */
-    setTaxa(taxa) {
-        this.taxa = taxa;
-    }
-    getTaxa() {
-        return this.taxa;
-    }
-    canConvert(conversor) {
-        if (!conversor.isValidCurrency()) {
+    canConvert() {
+        if (!this.conversor.isValidCurrency()) {
             return {
                 status: operationCodes_1.OperationStatus.FAILURE,
                 error: operationCodes_1.OperationErrors.INVALID_CURRENCY
             };
         }
-        else if (!conversor.isValidValue()) {
+        else if (!this.conversor.isValidValue()) {
             return {
                 status: operationCodes_1.OperationStatus.FAILURE,
                 error: operationCodes_1.OperationErrors.INVALID_VALUE
             };
         }
+        else if (!this.conversor.isValidCurrencySize()) {
+            return {
+                status: operationCodes_1.OperationStatus.FAILURE,
+                error: operationCodes_1.OperationErrors.INVALID_CURRENCY_SIZE
+            };
+        }
         return {
             status: operationCodes_1.OperationStatus.SUCCESS
         };
-    }
-    roundValues(resultado, taxa) {
-        // Arredondar o resultado para 2 casas decimais
-        resultado = Math.round(resultado * 100) / 100;
-        // arredondar a taxa para 6 casas decimais
-        taxa = Math.round(taxa * 1000000) / 1000000;
-        return { resultado, taxa };
     }
     /**
   * Realiza a conversão de moedas.
@@ -70,19 +49,15 @@ class ConversorController {
   */
     converter() {
         return __awaiter(this, void 0, void 0, function* () {
-            const conversor = new Conversor_1.Conversor(this.origem, this.destino, this.valor);
-            const canConvert = this.canConvert(conversor);
+            const canConvert = this.canConvert();
             if (canConvert.status === operationCodes_1.OperationStatus.FAILURE) {
-                return { status: canConvert.status, error: canConvert.error };
+                return { valorConvertido: 0, taxa: 0, status: canConvert.status, error: canConvert.error };
             }
-            let resultado = yield conversor.converter();
-            let taxa = conversor.getTaxa();
+            yield this.conversor.converter();
+            let taxa = this.conversor.getTaxa();
+            let valorConvertido = this.conversor.getValorConvertido();
+            return { valorConvertido, taxa, status: operationCodes_1.OperationStatus.SUCCESS, error: 0 };
             // pega os resulstados arredondados da função roundvalues
-            const { resultado: roundedResult, taxa: roundedTaxa } = this.roundValues(resultado, taxa);
-            resultado = roundedResult;
-            taxa = roundedTaxa;
-            this.setTaxa(taxa);
-            return resultado;
         });
     }
 }

@@ -24,5 +24,11 @@ class OperationErrors {
     static get INVALID_VALUE() {
         return 2;
     }
+    static get INVALID_CURRENCY_SIZE() {
+        return 3;
+    }
+    static get INVALID_CURRENCY_PAIR() {
+        return 4;
+    }
 }
 exports.OperationErrors = OperationErrors;

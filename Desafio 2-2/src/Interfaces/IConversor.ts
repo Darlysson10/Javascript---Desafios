@@ -7,5 +7,5 @@ export interface ConversorInterface {
     isValidValue(): boolean;
     isValidCurrencySize(): boolean;
     moedasIguais(): boolean;
-    converter(): Promise<number>;
+    converter(): Promise<void>;
   }

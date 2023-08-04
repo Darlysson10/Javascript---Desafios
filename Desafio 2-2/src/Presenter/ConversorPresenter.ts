@@ -33,16 +33,17 @@ export class ConversorPresenter implements IConversorPresenter {
             }
             // Inicializa o controlador de conversão com as moedas e valor informados pelo usuário
             const conversorController = new ConversorController(moedaOrigem, moedaDestino, valor);
+            // Realiza a conversão
             const result = await conversorController.converter();
             // Exibe erros, se houver
-            if (typeof result === 'object') {
+            if (result.error !== 0) {
                 if (result.status === OperationStatus.FAILURE) {
                     this.conversorView.showErrors(result.status, result.error);
                 }
             }
             else {
                  // Exibe o resultado da conversão
-                this.conversorView.showResult(result, conversorController.getTaxa(),  moedaDestino);
+                this.conversorView.showResult(result.valorConvertido, result.taxa,  moedaDestino);
             }
 
 
