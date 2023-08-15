@@ -22,10 +22,10 @@ class CadastroDePacientes {
     //retorna o nome a data de nacimento dos pacientes. Utilizada para criar um objeto consulta.
     pacienteNomeDataNasc(cpf){
         let pacientes = this.pacientesCadastro;
-        for(let i = 0; i < pacientes.length; i++){
-            if(pacientes[i].cpf === cpf){
-                let nome = pacientes[i].nome;
-                let dataNascimento = pacientes[i].dataNascimento;
+        for(const element of pacientes){
+            if(element.cpf === cpf){
+                let nome = element.nome;
+                let dataNascimento = element.dataNascimento;
                 return {nome, dataNascimento};
             }
         }
