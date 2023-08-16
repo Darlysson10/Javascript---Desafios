@@ -8,6 +8,13 @@ class ValidacaoDataHora {
         return data_formatada;
     }
 
+    // Deixar a data no formato ddMMyyyy para salvar no banco de dados.
+    static formatarDataInputBanco(data) {
+        const formato =  'ddMMyyyy'
+        let data_formatada = data.toFormat(formato);
+        return data_formatada;
+    }
+
     // Formata a data de saída dd/MM/yyyy para listagem de consultas.
     static formatarDataOutput(data) {
         const formato = 'dd/MM/yyyy';

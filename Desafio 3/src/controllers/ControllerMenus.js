@@ -3,12 +3,12 @@ const ControllerAgenda = require('./ControllerAgenda');
 const InputMenus = require('../views/InputMenus');
 
 class ControllerMenus {
-    static ControllerMainMenu() {
+    static async ControllerMainMenu() {
         // Lida com os casos de entrada do menu principal, chamando os controllers correspondentes
         let opcao = InputMenus.mainMenu();
         switch (opcao) {
             case 1:
-                ControllerCadastro.ControllerCadastroPaciente();
+                await ControllerCadastro.ControllerCadastroPaciente();
                 break;
             case 2:
                 ControllerAgenda.ControllerMenuAgenda();

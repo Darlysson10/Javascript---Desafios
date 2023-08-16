@@ -8,17 +8,18 @@ const ViewValidacoes = require('../views/ViewValidacaoes');
 const ValidacaoDataHora = require('../models/ValidacaoDataHora');
 const ValidacaoResultados = require('../models/ValidacaoResultados');
 const cadastroDePacientes = require('../models/CadastroDePacientes');
+const PacienteBD = require('../models bd/PacienteBD');
 
 class ControllerCadastro {
     
-    static ControllerCadastroPaciente(){
+    static async ControllerCadastroPaciente(){
         
         const ControllerMenus = require('./ControllerMenus');
         let opcao = InputMenus.menuCadastroPaciente();
         // Lida com as opções escolhidas no menu de cadastro, chamadno os controllers correspondentes.
         switch (opcao) {
             case 1:
-                this.ControllerCadastrarPaciente();
+                await this.ControllerCadastrarPaciente();
                 break;
             case 2:
                 this.ControllerExcluirPaciente();
@@ -37,16 +38,25 @@ class ControllerCadastro {
 
     }
 }
-    static ControllerCadastrarPaciente(){
+    static async ControllerCadastrarPaciente(){
         let dadosPaciente = InputMenus.menuCadastrarPaciente(); // recebe os dados do paciente
         dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataInput(dadosPaciente.dataNascimento); // formata a data de nascimento
         let idade = Paciente.calcularIdade(dadosPaciente.dataNascimento); // calcula a idade
         let resultadoValidacao = ValidacaoCadastroPaciente.validacaoPaciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade); // valida os dados do paciente
         if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se os dados forem válidos, cadastra o paciente
-            dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataOutput(dadosPaciente.dataNascimento); // formata a data de nascimento para o padrão dd/mm/aaaa
+            //dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataOutput(dadosPaciente.dataNascimento); // formata a data de nascimento para o padrão dd/mm/aaaa
+            dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataInputBanco(dadosPaciente.dataNascimento);
+            console.log(dadosPaciente.dataNascimento);
             idade = Math.floor(idade); // arredonda a idade, pois o cálculo retorna um número decimal
             const paciente = new Paciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade); // cria o objeto paciente
-            cadastroDePacientes.cadastrarPaciente(paciente); // cadastra o paciente - TODO mudar para banco de dados - sequelize separado, pois é uma tecnologia
+            //cadastroDePacientes.cadastrarPaciente(paciente); // cadastra o paciente
+            await PacienteBD.create({
+                nome: paciente.nome,
+                cpf: paciente.cpf,
+                dataNascimento: paciente.dataNascimento,
+                idade: paciente.idade
+            });
+
             ViewValidacoes.menssagemSucessoPaciente(); // exibe mensagem de sucesso
             this.ControllerCadastroPaciente(); // retorna ao menu de cadastro
         }

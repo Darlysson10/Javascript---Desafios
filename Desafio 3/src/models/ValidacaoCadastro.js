@@ -3,10 +3,7 @@ const ValidacaoDataHora = require("./ValidacaoDataHora");
 class ValidacaoCadastroPaciente {
     //Verifica se o nome possui mais de 5 caracteres.
     static validacaoNome(nome) {
-        if (nome.length >= 5) {
-            return true;
-        }
-        return false;
+        return nome.length >= 5;
     }
 
 

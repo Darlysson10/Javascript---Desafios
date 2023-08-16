@@ -5,7 +5,7 @@ class CadastroDePacientes {
     #pacientes;
 
     constructor() {
-        this.#pacientes = []; // criar um objeto do banco de dados 
+        this.#pacientes = [];
     }
 
     get pacientesCadastro()
@@ -15,7 +15,7 @@ class CadastroDePacientes {
 
     cadastrarPaciente(paciente) {
     
-        this.#pacientes.push(paciente); // comunicar-se com o banco de dados
+        this.#pacientes.push(paciente);
  
     }
 
