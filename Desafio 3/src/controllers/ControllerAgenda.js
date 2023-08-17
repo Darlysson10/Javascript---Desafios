@@ -7,19 +7,21 @@ const Consulta = require('../models/Consulta');
 const ValidacaoResultados = require('../models/ValidacaoResultados');
 const ViewListagem = require('../views/ViewListagem');
 const ValidacaoDataHora = require('../models/ValidacaoDataHora');
+const PacienteBD = require('../models bd/PacienteBD');
+const AgendaBD = require('../models bd/AgendaBD');
 class ControllerAgenda {
-    static ControllerMenuAgenda(){ // menu da agenda
+    static async ControllerMenuAgenda(){ // menu da agenda
         const ControllerMenus = require('./ControllerMenus');
         let opcao = InputMenus.menuAgenda();
         switch (opcao) {
             case 1:
-                this.ControllerAgendarConsulta();
+                await this.ControllerAgendarConsulta();
                 break;
             case 2:
                 this.ControllerCancelarConsulta();
                 break;
             case 3:
-                this.ControllerListarAgenda();
+                await this.ControllerListarAgenda();
                 break;
             case 4:
                 ControllerMenus.ControllerMainMenu();
@@ -30,16 +32,25 @@ class ControllerAgenda {
 
     }
 
-    static ControllerAgendarConsulta(){ // Controller para agendar consulta
+    static async ControllerAgendarConsulta(){ // Controller para agendar consulta
         let dadosConsulta = InputMenus.menuAgendarConsulta(); // recebe os dados da consulta
         dadosConsulta.data = ValidacaoDataHora.formatarDataInput(dadosConsulta.data); // formata a data
-        let resultadoValidacao = ValidacaoAgenda.validacaoAgenda(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial, dadosConsulta.horaFinal); // valida os dados da consulta
+        let resultadoValidacao = await ValidacaoAgenda.validacaoAgenda(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial, dadosConsulta.horaFinal); // valida os dados da consulta
         if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se os dados forem válidos, agenda a consulta
-            dadosConsulta.data = ValidacaoDataHora.formatarDataOutput(dadosConsulta.data); // formata a data para o padrão dd/mm/aaaa
-            let dadosPaciente = cadastroDePacientes.pacienteNomeDataNasc(dadosConsulta.cpf); // busca os dados do paciente
+            dadosConsulta.data = ValidacaoDataHora.formatarDataInputBanco(dadosConsulta.data); // formata a data para o padrão ddmmmaaaa
+            //let dadosPaciente = cadastroDePacientes.pacienteNomeDataNasc(dadosConsulta.cpf); // busca os dados do paciente
+            let dadosPaciente = await PacienteBD.findOne({ where: { cpf: dadosConsulta.cpf } });
             let tempo = ValidacaoDataHora.subtrairHoras(dadosConsulta.horaInicial, dadosConsulta.horaFinal); // calcula o tempo da consulta
-            let consulta = new Consulta(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial, dadosConsulta.horaFinal, tempo, dadosPaciente.nome, dadosPaciente.dataNascimento); // cria o objeto consulta
-            agenda.agendarConsulta(consulta); // agenda a consulta
+            let consulta = new Consulta(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial, dadosConsulta.horaFinal, tempo, dadosPaciente.nome, dadosPaciente.dataNascimento); 
+            await AgendaBD.create({ // abstrair para uma função
+                data: consulta.data,
+                horaInicial: consulta.horaInicial,
+                horaFinal: consulta.horaFinal,
+                tempo: consulta.tempo,
+                cpf: dadosPaciente.cpf
+            });
+            // cria o objeto consulta
+            //agenda.agendarConsulta(consulta); // agenda a consulta
             ViewValidacaoes.mensagemSucessoAgendamento();
             this.ControllerMenuAgenda();
         }
@@ -49,12 +60,16 @@ class ControllerAgenda {
         }
     }
 
-    static ControllerCancelarConsulta(){ // Controller para cancelar consulta
+    static async ControllerCancelarConsulta(){ // Controller para cancelar consulta
         let dadosConsulta = InputMenus.menuCancelarConsulta(); // recebe os dados da consulta
         dadosConsulta.data = ValidacaoDataHora.formatarDataInput(dadosConsulta.data);// formata a data
-        let resultadoValidacao = ValidacaoAgenda.validacaoCancelamento(dadosConsulta.cpf,  ValidacaoDataHora.formatarDataOutput(dadosConsulta.data), dadosConsulta.horaInicial); // valida os dados da consulta
+        let resultadoValidacao = await ValidacaoAgenda.validacaoCancelamento(dadosConsulta.cpf,  dadosConsulta.data, dadosConsulta.horaInicial); // valida os dados da consulta
         if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se os dados forem válidos, cancela a consulta
-            agenda.cancelarAgendamento(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial);
+            //agenda.cancelarAgendamento(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial);
+            dadosConsulta.data = ValidacaoDataHora.formatarDataInputBanco(dadosConsulta.data);
+            //abstrair para uma função da classe agenda
+            const consulta = await AgendaBD.findOne({ where: { cpf: dadosConsulta.cpf, data: dadosConsulta.data, horaInicial: dadosConsulta.horaInicial } });
+            await consulta.destroy();
             ViewValidacaoes.mensagemSucessoCancelamento();
             this.ControllerMenuAgenda();
         }
@@ -64,16 +79,18 @@ class ControllerAgenda {
         }
     }
 
-    static ControllerListarAgenda(){ // Controller para listar a agenda
+    static async ControllerListarAgenda(){ // Controller para listar a agenda
         let opcao = InputMenus.menuListarAgenda(); // lida com as opções de listar a agenda toda ou por período
         switch (opcao) {
             case 1:
-                ViewListagem.listarAgenda();
+                await ViewListagem.listarAgenda();
                 this.ControllerMenuAgenda();
                 break;
             case 2:
                 let dadosConsulta = InputMenus.menuListarAgendaPeriodo();
-                ViewListagem.listarAgendaPeriodo(dadosConsulta.dataInicial, dadosConsulta.dataFinal);
+                dadosConsulta.dataInicial = ValidacaoDataHora.formatarDataInput(dadosConsulta.dataInicial);
+                dadosConsulta.dataFinal = ValidacaoDataHora.formatarDataInput(dadosConsulta.dataFinal);
+                await ViewListagem.listarAgendaPeriodo(dadosConsulta.dataInicial, dadosConsulta.dataFinal);
                 this.ControllerMenuAgenda();
                 break;
             default:

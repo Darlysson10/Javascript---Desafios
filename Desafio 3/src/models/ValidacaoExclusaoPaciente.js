@@ -1,9 +1,11 @@
 const ValidacaoCPF = require("./ValidacaoCPF");
 const agenda = require('./Agenda');
+const PacienteBD = require('../models bd/PacienteBD');
+const AgendaBD = require('../models bd/AgendaBD');
 class ValidacaoExclusaoPaciente {
    
-    static validacaoExclusaoPaciente(cpf) {
-        let consultas_futuras = agenda.consultasFuturasPaciente(cpf);
+    static async validacaoExclusaoPaciente(cpf) {
+        let consultas_futuras = await AgendaBD.findAll({ where: { cpf: cpf } });
         let resultados = [];
         if (consultas_futuras.length > 0) {
              resultados.push(false);// retornando false, não apague o paciente

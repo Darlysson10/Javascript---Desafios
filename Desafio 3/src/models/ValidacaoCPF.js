@@ -1,13 +1,11 @@
 const cadastroDePacientes = require('../models/CadastroDePacientes');
+const PacienteBD = require('../models bd/PacienteBD');
 class ValidacaoCPF {
 
 
    //Verifica se o tamanho do cpf é 11.
     static validacaoTamanhoCPF(cpf) {
-        if (cpf.length === 11) {
-            return true;
-        }
-        return false;
+        return cpf.length === 11;
     }
 
     static validacaoDigitosIguaisCPF(cpf) {
@@ -49,35 +47,19 @@ class ValidacaoCPF {
         if ((resto === 10) || (resto === 11)) {
             resto = 0;
         }
-        if (resto !== parseInt(cpf.substring(10, 11))) {
-            return false;
-        }
-        return true;
+        return resto === parseInt(cpf.substring(10, 11));
 
     }
     // Verifica se o cpf já está cadastrado no sistema. 
-    static validacaoCPFExistente(cpf) {
-       // Atribui o array de pacientes cadastrados a uma variável.
-        const pacientes = cadastroDePacientes.pacientesCadastrados();
-        // Se não houver pacientes cadastrados, retorna false.
-        if (pacientes.length === 0) {
-            return false;
-        }
-        // Se houver pacientes cadastrados, verifica se o cpf já está cadastrado.
-        let paciente_id = cadastroDePacientes.buscarPaciente(cpf);
-        // Se o cpf não estiver cadastrado, retorna false.
-        if (paciente_id === undefined) {
-            return false;
-        }
-        return true;
+    static async validacaoCPFExistente(cpf) {
+       // verifica se o cpf já está cadastrado no sistema no banco de dados
+       const paciente = await PacienteBD.findOne({ where: { cpf: cpf } });
+       return !!(paciente);
     }
 
-    static validacaoCPF(cpf) {
+    static async validacaoCPF(cpf) {
         // Verificação geral do CPF. Utilizada para validar o CPF no cadastro de pacientes e no agendamento de consultas.
-        if (this.validacaoCPFExistente(cpf) || !this.validacaoTamanhoCPF(cpf) || !this.validacaoDigitosIguaisCPF(cpf) || !this.validacaoDigitosCPF(cpf)) {
-            return false;
-        } 
-        return true;
+        return !(await this.validacaoCPFExistente(cpf) || !this.validacaoTamanhoCPF(cpf) || !this.validacaoDigitosIguaisCPF(cpf) || !this.validacaoDigitosCPF(cpf));
     }
 
 

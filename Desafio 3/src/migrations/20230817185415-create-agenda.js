@@ -1,31 +1,32 @@
-const Sequelize = require('sequelize');
-const database = require('../db');
-const PacienteBD = require('./PacienteBD');
+'use strict';
 
-const AgendaBD = database.define('agenda', {
-    id: {
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.createTable('agendas', {
+      id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
-    },
-    data: {
+      },
+      data: {
         type: Sequelize.STRING,
         allowNull: false
-    },
-    horaInicial: {
+      },
+      horaInicial: {
         type: Sequelize.STRING,
         allowNull: false
-    },
-    horaFinal: {
+      },
+      horaFinal: {
         type: Sequelize.STRING,
         allowNull: false
-    },
-    tempo: {
+      },
+      tempo: {
         type: Sequelize.INTEGER,
         allowNull: false
-    },
-    cpf: {
+      },
+      cpf: {
         type: Sequelize.STRING,
         allowNull: false,
         primaryKey: true,
@@ -33,10 +34,14 @@ const AgendaBD = database.define('agenda', {
             model: 'pacientes',
             key: 'cpf'
         }
-    }
+      }
+    }, {
+      timestamps: false
+    });
+  },
 
-}, {
-    timestamps: false
-});
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('agendas');
 
-module.exports = AgendaBD;
+  }
+};

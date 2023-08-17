@@ -42,11 +42,10 @@ class ControllerCadastro {
         let dadosPaciente = InputMenus.menuCadastrarPaciente(); // recebe os dados do paciente
         dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataInput(dadosPaciente.dataNascimento); // formata a data de nascimento
         let idade = Paciente.calcularIdade(dadosPaciente.dataNascimento); // calcula a idade
-        let resultadoValidacao = ValidacaoCadastroPaciente.validacaoPaciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade); // valida os dados do paciente
+        let resultadoValidacao = await ValidacaoCadastroPaciente.validacaoPaciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade); // valida os dados do paciente
         if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se os dados forem válidos, cadastra o paciente
             //dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataOutput(dadosPaciente.dataNascimento); // formata a data de nascimento para o padrão dd/mm/aaaa
             dadosPaciente.dataNascimento = ValidacaoDataHora.formatarDataInputBanco(dadosPaciente.dataNascimento);
-            console.log(dadosPaciente.dataNascimento);
             idade = Math.floor(idade); // arredonda a idade, pois o cálculo retorna um número decimal
             const paciente = new Paciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade); // cria o objeto paciente
             //cadastroDePacientes.cadastrarPaciente(paciente); // cadastra o paciente
@@ -66,12 +65,14 @@ class ControllerCadastro {
         }
    }
 
-    static ControllerExcluirPaciente(){ // exclui o paciente
+    static async ControllerExcluirPaciente(){ // exclui o paciente
         let cpf = InputMenus.menuExcluirPaciente(); // recebe o cpf do paciente
-        let resultadoValidacao = ValidacaoExclusaoPaciente.validacaoExclusaoPaciente(cpf); // valida o cpf
+        let resultadoValidacao = await ValidacaoExclusaoPaciente.validacaoExclusaoPaciente(cpf); // valida o cpf
         if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se o cpf for válido, exclui o paciente
-            cadastroDePacientes.deletarPaciente(cpf); // Função para excluir o paciente
-            ViewValidacoes.mensagemSucessoExclusao(); // exibe mensagem de sucesso
+           //cadastroDePacientes.deletarPaciente(cpf); // Função para excluir o paciente
+            const paciente = await PacienteBD.findOne({ where: { cpf: cpf } });
+            await paciente.destroy();
+           ViewValidacoes.mensagemSucessoExclusao(); // exibe mensagem de sucesso
             this.ControllerCadastroPaciente(); // retorna ao menu de cadastro
         }
         else {

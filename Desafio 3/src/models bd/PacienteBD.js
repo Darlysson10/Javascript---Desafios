@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const database = require('../db');
-
+const AgendaBD = require('./AgendaBD');
 // TODO: Mudar para uma classe
 const PacienteBD = database.define('paciente', {
     id: {
@@ -31,4 +31,6 @@ const PacienteBD = database.define('paciente', {
     timestamps: false
 });
 
+PacienteBD.hasOne(AgendaBD, {constraints: true, foreignKey: 'cpf', onDelete: 'CASCADE'});
+AgendaBD.hasMany(PacienteBD, {foreignKey: 'cpf'});
 module.exports = PacienteBD;

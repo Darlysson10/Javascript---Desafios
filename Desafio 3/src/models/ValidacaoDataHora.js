@@ -4,8 +4,8 @@ class ValidacaoDataHora {
     // Formata a data de entrada dd/MM/yyyy para criação de um objeto DateTime do luxon.
     static formatarDataInput(data) {
         const formato = 'dd/MM/yyyy';
-        let data_formatada = DateTime.fromFormat(data, formato);
-        return data_formatada;
+        const dataFormatada = DateTime.fromFormat(data, formato);
+        return dataFormatada;
     }
 
     // Deixar a data no formato ddMMyyyy para salvar no banco de dados.
@@ -20,6 +20,11 @@ class ValidacaoDataHora {
         const formato = 'dd/MM/yyyy';
         const dataFormatada = DateTime.fromFormat(data, "ddMMyyyy");
         return dataFormatada.toFormat(formato);
+    }
+
+    static formatarDataOutputExclusaoAgendamento(data) {
+        const formato = 'dd/MM/yyyy';
+        return data.toFormat(formato);
     }
 
     // // Formata a hora de saída para HH:mm.
@@ -46,10 +51,7 @@ class ValidacaoDataHora {
       static validacaoData(data) {
         const data_atual = DateTime.now();
         const data_consulta = DateTime.fromISO(data);
-        if (data_consulta > data_atual) {
-            return true;
-        }
-        return false;
+        return data_consulta > data_atual;
     }
 
     // Verifica se a hora de consulta é maior que a hora atual, caso as datas sejam iguais.
@@ -61,10 +63,7 @@ class ValidacaoDataHora {
             return true;
         }
 
-        if (horaConsulta >= horaAtual) {
-            return true;
-        }
-        return false;
+        return horaConsulta >= horaAtual;
         
     }
 
@@ -90,10 +89,7 @@ class ValidacaoDataHora {
     static validacaoHoraInicialHoraFinal(horaInicial, horaFinal) {
         let minutosInicio = parseInt(horaInicial.substring(2, 4));
         let minutosFim = parseInt(horaFinal.substring(2, 4));
-        if (minutosInicio % 15 == 0 && minutosFim % 15 == 0) {    
-            return true;
-        }
-        return false;
+        return !!(minutosInicio % 15 == 0 && minutosFim % 15 == 0);
     }
 
     //Verifica se as horas recebidas estão dentro do limite de funcionamento do consultório.
@@ -141,10 +137,7 @@ class ValidacaoDataHora {
         const data_atual = DateTime.now();
         const data_nascimento = DateTime.fromISO(dataNascimento);
         // data de nascimento deve ser menor que a data atual e o paciente deve pelo menos 13 anos
-        if (data_nascimento < data_atual && idade >= 13) {
-            return true;
-        }
-        return false;
+        return !!(data_nascimento < data_atual && idade >= 13); // as duas exclamações são para converter o resultado em booleano
     }
 
 }

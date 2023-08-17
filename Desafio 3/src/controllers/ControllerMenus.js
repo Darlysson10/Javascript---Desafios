@@ -11,7 +11,7 @@ class ControllerMenus {
                 await ControllerCadastro.ControllerCadastroPaciente();
                 break;
             case 2:
-                ControllerAgenda.ControllerMenuAgenda();
+                await ControllerAgenda.ControllerMenuAgenda();
                 break;
             case 3:
                 break;

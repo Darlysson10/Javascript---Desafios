@@ -7,7 +7,7 @@ class ValidacaoCadastroPaciente {
     }
 
 
-    static validacaoPaciente(nome, cpf, dataNascimento, idade) {
+    static async validacaoPaciente(nome, cpf, dataNascimento, idade) {
         
         // Um array de resultados para retornar o que ocorreu em cada validação e assim imprimir as mensagens de erro corretamente.
         let resultados = [];
@@ -25,7 +25,7 @@ class ValidacaoCadastroPaciente {
             resultados.push(true);
         }
 
-        if (ValidacaoCPF.validacaoCPF(cpf) === false) {
+        if (await ValidacaoCPF.validacaoCPF(cpf) === false) {
             resultados.push(false);
         }
         else{
