@@ -42,15 +42,13 @@ class ControllerAgenda {
             let dadosPaciente = await PacienteBD.findOne({ where: { cpf: dadosConsulta.cpf } });
             let tempo = ValidacaoDataHora.subtrairHoras(dadosConsulta.horaInicial, dadosConsulta.horaFinal); // calcula o tempo da consulta
             let consulta = new Consulta(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial, dadosConsulta.horaFinal, tempo, dadosPaciente.nome, dadosPaciente.dataNascimento); 
-            await AgendaBD.create({ // abstrair para uma função
+            await AgendaBD.create({
                 data: consulta.data,
                 horaInicial: consulta.horaInicial,
                 horaFinal: consulta.horaFinal,
                 tempo: consulta.tempo,
                 cpf: dadosPaciente.cpf
             });
-            // cria o objeto consulta
-            //agenda.agendarConsulta(consulta); // agenda a consulta
             ViewValidacaoes.mensagemSucessoAgendamento();
             this.ControllerMenuAgenda();
         }
@@ -65,11 +63,10 @@ class ControllerAgenda {
         dadosConsulta.data = ValidacaoDataHora.formatarDataInput(dadosConsulta.data);// formata a data
         let resultadoValidacao = await ValidacaoAgenda.validacaoCancelamento(dadosConsulta.cpf,  dadosConsulta.data, dadosConsulta.horaInicial); // valida os dados da consulta
         if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se os dados forem válidos, cancela a consulta
-            //agenda.cancelarAgendamento(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial);
+           
             dadosConsulta.data = ValidacaoDataHora.formatarDataInputBanco(dadosConsulta.data);
             //abstrair para uma função da classe agenda
-            const consulta = await AgendaBD.findOne({ where: { cpf: dadosConsulta.cpf, data: dadosConsulta.data, horaInicial: dadosConsulta.horaInicial } });
-            await consulta.destroy();
+            await AgendaBD.destroy({ where: { cpf: dadosConsulta.cpf, data: dadosConsulta.data, horaInicial: dadosConsulta.horaInicial } });
             ViewValidacaoes.mensagemSucessoCancelamento();
             this.ControllerMenuAgenda();
         }

@@ -42,7 +42,6 @@ class ViewListagem {
         console.log('---------------------------------------------------------------------');
         console.log("CPF".padEnd(20), "Nome".padEnd(20), "Data de Nascimento".padEnd(20), "Idade");
         console.log('---------------------------------------------------------------------');
-        // Mudar para uma consulta de pacientes ordenados por nome
         const pacientesNome = await PacienteBD.findAll({ order: ['nome'] });
         const consultas = await AgendaBD.findAll();
         pacientesNome.forEach(paciente => {
