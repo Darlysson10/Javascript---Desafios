@@ -1,4 +1,6 @@
 const { DateTime } = require("luxon");
+
+//Aplicar o sequelize
 class Paciente {
     
     #nome;

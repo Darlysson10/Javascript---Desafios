@@ -18,7 +18,8 @@ class ValidacaoDataHora {
     // Formata a data de saída dd/MM/yyyy para listagem de consultas.
     static formatarDataOutput(data) {
         const formato = 'dd/MM/yyyy';
-        return data.toFormat(formato);
+        const dataFormatada = DateTime.fromFormat(data, "ddMMyyyy");
+        return dataFormatada.toFormat(formato);
     }
 
     // // Formata a hora de saída para HH:mm.

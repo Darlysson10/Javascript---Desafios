@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const database = require('../db');
 
+// TODO: Mudar para uma classe
 const PacienteBD = database.define('paciente', {
     id: {
         type: Sequelize.INTEGER,

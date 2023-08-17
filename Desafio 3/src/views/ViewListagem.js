@@ -2,47 +2,53 @@ const cadastroDePacientes = require('../models/CadastroDePacientes');
 const agenda = require('../models/Agenda');
 const ValidacaoAgenda = require('../models/ValidacaoAgenda');
 const ValidacaoDataHora = require('../models/ValidacaoDataHora');
+const PacienteBD = require('../models bd/PacienteBD');
 class ViewListagem {
     
 
-    static listarPacientesCPF() {
+    static async listarPacientesCPF() {
         // juntar com a função do nome e apenas verificar se foi pedido por cpf ou por nome
-        const pacientes = cadastroDePacientes.getPacientesCPF();
+        //const pacientes = cadastroDePacientes.getPacientesCPF();
         console.log('---------------------------------------------------------------------');
         console.log("CPF".padEnd(20), "Nome".padEnd(20), "Data de Nascimento".padEnd(20), "Idade");
         console.log('---------------------------------------------------------------------');
-        for (let i = 0; i < pacientes.length; i++) {
-            console.log(pacientes[i].cpf.padEnd(20), pacientes[i].nome.padEnd(20), pacientes[i].dataNascimento.padEnd(20), pacientes[i].idade);
+        // Mudar para uma consulta de pacientes ordenados por cpf
+        const pacientesCPF = await PacienteBD.findAll({ order: ['cpf'] });
+        pacientesCPF.forEach(paciente => {
+            paciente.dataNascimento = ValidacaoDataHora.formatarDataOutput(paciente.dataNascimento);
+            console.log(paciente.cpf.padEnd(20), paciente.nome.padEnd(20), paciente.dataNascimento.padEnd(20), paciente.idade);
             //listar agendamentos caso o paciente tenha consultas agendadas
-            if (agenda.consultasFuturasPaciente(pacientes[i].cpf).length > 0) {
-                console.log("Consultas Futuras:");
-                this.listarAgendamentosPaciente(pacientes[i].cpf);
-            }
-        }
+            // if (agenda.consultasFuturasPaciente(paciente.cpf).length > 0) {
+            //     console.log("Consultas Futuras:");
+            //     this.listarAgendamentosPaciente(paciente.cpf);
+            // }
+        });
     }
 
     static listarAgendamentosPaciente(cpf) {
         const consultas = agenda.consultasFuturasPaciente(cpf);
-        for (let i = 0; i < consultas.length; i++) {
-            let horaFinal = ValidacaoDataHora.formatarHoraOutput(consultas[i].horaFinal);
-            let horaInicial = ValidacaoDataHora.formatarHoraOutput(consultas[i].horaInicial);
-            console.log("Agendado para:"+ consultas[i].data + " das " + horaInicial + " às " + horaFinal);
+        for (let consulta of consultas) {
+            let horaFinal = ValidacaoDataHora.formatarHoraOutput(consulta.horaFinal);
+            let horaInicial = ValidacaoDataHora.formatarHoraOutput(consulta.horaInicial);
+            console.log("Agendado para:"+ consulta.data + " das " + horaInicial + " às " + horaFinal);
         }
     }
     
-    static listarPacientesNome() {
-        const pacientes = cadastroDePacientes.getPacientesNome();
+    static async listarPacientesNome() {
         console.log('---------------------------------------------------------------------');
         console.log("CPF".padEnd(20), "Nome".padEnd(20), "Data de Nascimento".padEnd(20), "Idade");
         console.log('---------------------------------------------------------------------');
-        for (let i = 0; i < pacientes.length; i++) {
-            console.log(pacientes[i].cpf.padEnd(20), pacientes[i].nome.padEnd(20), pacientes[i].dataNascimento.padEnd(20), pacientes[i].idade);
+        // Mudar para uma consulta de pacientes ordenados por nome
+        const pacientesNome = await PacienteBD.findAll({ order: ['nome'] });
+        pacientesNome.forEach(paciente => {
+            paciente.dataNascimento = ValidacaoDataHora.formatarDataOutput(paciente.dataNascimento);
+            console.log(paciente.cpf.padEnd(20), paciente.nome.padEnd(20), paciente.dataNascimento.padEnd(20), paciente.idade);
             //listar agendamentos caso o paciente tenha consultas agendadas
-            if (agenda.consultasFuturasPaciente(pacientes[i].cpf).length > 0) {
-                console.log("Consultas Futuras:");
-                this.listarAgendamentosPaciente(pacientes[i].cpf);
-            }
-        }
+            // if (agenda.consultasFuturasPaciente(paciente.cpf).length > 0) {
+            //     console.log("Consultas Futuras:");
+            //     this.listarAgendamentosPaciente(paciente.cpf);
+            // }
+        });
     }
 
     static listarAgenda() {

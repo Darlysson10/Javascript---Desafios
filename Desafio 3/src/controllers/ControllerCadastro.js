@@ -25,10 +25,10 @@ class ControllerCadastro {
                 this.ControllerExcluirPaciente();
                 break;
             case 3:
-                this.ControllerListarPacientesCPF();
+                await this.ControllerListarPacientesCPF();
                 break;
             case 4:
-                this.ControllerListarPacientesNome();
+                await this.ControllerListarPacientesNome();
                 break;
             case 5:
                 ControllerMenus.ControllerMainMenu();
@@ -80,13 +80,13 @@ class ControllerCadastro {
         }
     }
 
-    static ControllerListarPacientesCPF(){ // lista os pacientes por cpf
-        ViewListagem.listarPacientesCPF();
+    static async ControllerListarPacientesCPF(){ // lista os pacientes por cpf
+        await ViewListagem.listarPacientesCPF();
         this.ControllerCadastroPaciente();
     }
 
-    static ControllerListarPacientesNome(){ // lista os pacientes por nome
-        ViewListagem.listarPacientesNome();
+    static async ControllerListarPacientesNome(){ // lista os pacientes por nome
+        await ViewListagem.listarPacientesNome();
         this.ControllerCadastroPaciente();
     }
 
