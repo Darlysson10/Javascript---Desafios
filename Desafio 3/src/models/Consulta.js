@@ -7,7 +7,7 @@ class Consulta {
     #horaFinal;
     #tempo;
 
-    constructor(cpf_paciente, data,horaInicial, horaFinal, tempo, nome, dataNascimento) {
+    constructor(cpf_paciente, data,horaInicial, horaFinal, tempo) {
         this.#cpf_paciente = cpf_paciente;
         this.#data = data;
         this.#horaInicial = horaInicial;
