@@ -96,10 +96,7 @@ class ValidacaoDataHora {
     static validacaoHoraInicialHoraFinalLimite(horaInicial, horaFinal) {
         let horaInicio = parseInt(horaInicial.substring(0, 2));
         let horaFim = parseInt(horaFinal.substring(0, 2));
-        if (horaInicio >= 8 && horaFim <= 19) {
-            return true;
-        }
-        return false;
+        return !!(horaInicio >= 8 && horaFim <= 19);
     }
 
     // Método geral para verificar se a data e hora de consulta são válidas. O array de resultados é utilizado para imprimir as mensagens de erro corretamente.

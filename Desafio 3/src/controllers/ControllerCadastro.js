@@ -7,8 +7,6 @@ const ValidacaoExclusaoPaciente = require('../models/ValidacaoExclusaoPaciente')
 const ViewValidacoes = require('../views/ViewValidacaoes');
 const ValidacaoDataHora = require('../models/ValidacaoDataHora');
 const ValidacaoResultados = require('../models/ValidacaoResultados');
-const cadastroDePacientes = require('../models/CadastroDePacientes');
-const PacienteBD = require('../models bd/PacienteBD');
 
 class ControllerCadastro {
     
@@ -49,12 +47,7 @@ class ControllerCadastro {
             idade = Math.floor(idade); // arredonda a idade, pois o cálculo retorna um número decimal
             const paciente = new Paciente(dadosPaciente.nome, dadosPaciente.cpf, dadosPaciente.dataNascimento, idade); // cria o objeto paciente
             // cadastra o paciente
-            await PacienteBD.create({
-                nome: paciente.nome,
-                cpf: paciente.cpf,
-                dataNascimento: paciente.dataNascimento,
-                idade: paciente.idade
-            });
+            await paciente.AddPacienteDB();
 
             ViewValidacoes.menssagemSucessoPaciente(); // exibe mensagem de sucesso
             this.ControllerCadastroPaciente(); // retorna ao menu de cadastro
@@ -70,7 +63,7 @@ class ControllerCadastro {
         let resultadoValidacao = await ValidacaoExclusaoPaciente.validacaoExclusaoPaciente(cpf); // valida o cpf
         if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se o cpf for válido, exclui o paciente
         
-           await PacienteBD.destroy({ where: { cpf: cpf } });
+           await Paciente.ExcluirPacienteDB(cpf); // exclui o paciente
            ViewValidacoes.mensagemSucessoExclusao(); // exibe mensagem de sucesso
            this.ControllerCadastroPaciente(); // retorna ao menu de cadastro
         }

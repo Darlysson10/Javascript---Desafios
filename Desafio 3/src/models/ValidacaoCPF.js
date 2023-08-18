@@ -1,5 +1,4 @@
-const cadastroDePacientes = require('../models/CadastroDePacientes');
-const PacienteBD = require('../models bd/PacienteBD');
+const Paciente = require('../models/Paciente');
 class ValidacaoCPF {
 
 
@@ -53,8 +52,9 @@ class ValidacaoCPF {
     // Verifica se o cpf já está cadastrado no sistema. 
     static async validacaoCPFExistente(cpf) {
        // verifica se o cpf já está cadastrado no sistema no banco de dados
-       const paciente = await PacienteBD.findOne({ where: { cpf: cpf } });
-       return !!(paciente);
+        const paciente = await Paciente.BuscarPacienteCPF(cpf);
+        return !!(paciente);
+
     }
 
     static async validacaoCPF(cpf) {

@@ -5,18 +5,24 @@ const AgendaBD = require('../models bd/AgendaBD');
 class ValidacaoExclusaoPaciente {
    
     static async validacaoExclusaoPaciente(cpf) {
-        let consultas_futuras = await AgendaBD.findAll({ where: { cpf: cpf } });
-        let resultados = [];
-        if (consultas_futuras.length > 0) {
-             resultados.push(false);// retornando false, não apague o paciente
-         }
-        if (ValidacaoCPF.validacaoCPFExistente(cpf)) {
-            resultados.push(true);
+        try{
+            let consultas_futuras = await AgendaBD.findAll({ where: { cpf: cpf } });
+            let resultados = [];
+            if (consultas_futuras.length > 0) {
+                resultados.push(false);// retornando false, não apague o paciente
+            }
+            if (ValidacaoCPF.validacaoCPFExistente(cpf)) {
+                resultados.push(true);
+            }
+            else{
+                resultados.push(false);
+            }
+            return resultados; // retornando true, os dados do paciente são excluídos
         }
-        else{
-            resultados.push(false);
+        catch(err){
+            throw new Error("Erro ao consultar agenda:", err);
         }
-        return resultados; // retornando true, os dados do paciente são excluídos
+        
     }
 
 

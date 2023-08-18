@@ -1,14 +1,12 @@
 const InputMenus = require('../views/InputMenus');
 const ViewValidacaoes = require('../views/ViewValidacaoes');
-const agenda = require('../models/Agenda');
-const cadastroDePacientes = require('../models/CadastroDePacientes');
 const ValidacaoAgenda = require('../models/ValidacaoAgenda');
 const Consulta = require('../models/Consulta');
 const ValidacaoResultados = require('../models/ValidacaoResultados');
 const ViewListagem = require('../views/ViewListagem');
 const ValidacaoDataHora = require('../models/ValidacaoDataHora');
-const PacienteBD = require('../models bd/PacienteBD');
 const AgendaBD = require('../models bd/AgendaBD');
+const Paciente = require('../models/Paciente');
 class ControllerAgenda {
     static async ControllerMenuAgenda(){ // menu da agenda
         const ControllerMenus = require('./ControllerMenus');
@@ -38,17 +36,10 @@ class ControllerAgenda {
         let resultadoValidacao = await ValidacaoAgenda.validacaoAgenda(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial, dadosConsulta.horaFinal); // valida os dados da consulta
         if (ValidacaoResultados.validacaoResultados(resultadoValidacao)) { // se os dados forem válidos, agenda a consulta
             dadosConsulta.data = ValidacaoDataHora.formatarDataInputBanco(dadosConsulta.data); // formata a data para o padrão ddmmmaaaa
-            //let dadosPaciente = cadastroDePacientes.pacienteNomeDataNasc(dadosConsulta.cpf); // busca os dados do paciente
-            let dadosPaciente = await PacienteBD.findOne({ where: { cpf: dadosConsulta.cpf } });
+            let dadosPaciente = await Paciente.BuscarPacienteCPF(dadosConsulta.cpf); // busca os dados do paciente
             let tempo = ValidacaoDataHora.subtrairHoras(dadosConsulta.horaInicial, dadosConsulta.horaFinal); // calcula o tempo da consulta
-            let consulta = new Consulta(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial, dadosConsulta.horaFinal, tempo, dadosPaciente.nome, dadosPaciente.dataNascimento); 
-            await AgendaBD.create({
-                data: consulta.data,
-                horaInicial: consulta.horaInicial,
-                horaFinal: consulta.horaFinal,
-                tempo: consulta.tempo,
-                cpf: dadosPaciente.cpf
-            });
+            let consulta = new Consulta(dadosPaciente.cpf, dadosConsulta.data, dadosConsulta.horaInicial, dadosConsulta.horaFinal, tempo);
+            await consulta.AddConsultaDB(); // cadastra a consulta no banco de dados
             ViewValidacaoes.mensagemSucessoAgendamento();
             this.ControllerMenuAgenda();
         }
@@ -66,7 +57,7 @@ class ControllerAgenda {
            
             dadosConsulta.data = ValidacaoDataHora.formatarDataInputBanco(dadosConsulta.data);
             //abstrair para uma função da classe agenda
-            await AgendaBD.destroy({ where: { cpf: dadosConsulta.cpf, data: dadosConsulta.data, horaInicial: dadosConsulta.horaInicial } });
+            await Consulta.ExcluirConsultaDB(dadosConsulta.cpf, dadosConsulta.data, dadosConsulta.horaInicial); // exclui a consulta do banco de dados
             ViewValidacaoes.mensagemSucessoCancelamento();
             this.ControllerMenuAgenda();
         }

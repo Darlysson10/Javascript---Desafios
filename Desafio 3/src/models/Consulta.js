@@ -1,3 +1,4 @@
+const AgendaBD = require('../models bd/AgendaBD');
 class Consulta {
     
     #cpf_paciente;
@@ -5,8 +6,6 @@ class Consulta {
     #horaInicial;
     #horaFinal;
     #tempo;
-    #nome;
-    #dataNascimento;
 
     constructor(cpf_paciente, data,horaInicial, horaFinal, tempo, nome, dataNascimento) {
         this.#cpf_paciente = cpf_paciente;
@@ -14,9 +13,6 @@ class Consulta {
         this.#horaInicial = horaInicial;
         this.#horaFinal = horaFinal;
         this.#tempo = tempo;
-        //Dados do paciente
-        this.#nome = nome;
-        this.#dataNascimento = dataNascimento;
 
     }
 
@@ -40,13 +36,68 @@ class Consulta {
         return this.#tempo;
     }
 
-    get nome() {
-        return this.#nome;
+    async AddConsultaDB() {
+        try{
+            await AgendaBD.create({
+                cpf: this.cpf_paciente,
+                data: this.data,
+                horaInicial: this.horaInicial,
+                horaFinal: this.horaFinal,
+                tempo: this.tempo
+            });
+        }
+        catch(err){
+            throw new Error("Erro ao cadastrar consulta no banco de dados", err);
+        }
+
     }
 
-    get dataNascimento() {
-        return this.#dataNascimento;
+    static async ExcluirConsultaDB(cpf_paciente, data, horaInicial) {
+        try{
+            await AgendaBD.destroy({
+                where: {
+                    cpf: cpf_paciente,
+                    data: data,
+                    horaInicial: horaInicial
+                }
+            });
+        }
+        catch(err){
+            throw new Error("Erro ao excluir consulta do banco de dados", err);
+        }
     }
+
+    static async ConsultaPacienteDB(cpf) {
+        try{
+            const consultas = await AgendaBD.findAll({ where: { cpf: cpf } });
+            return consultas;
+        }
+        catch(err){
+            throw new Error("Erro ao consultar agenda do banco de dados", err);
+        }
+    }
+
+    static async ConsultaAgendaDB() {
+        try{
+            const consultas = await AgendaBD.findAll();
+            return consultas;
+        }
+        catch(err){
+            throw new Error("Erro ao consultar agenda do banco de dados", err);
+        }
+    }
+
+    static async ConsultaAgendaPeriodoDB() {
+        try{
+            const consultas = await AgendaBD.findAll({ order: ['data', 'horaInicial'] });
+            return consultas;
+        }
+        catch(err){
+            throw new Error("Erro ao consultar agenda do banco de dados", err);
+        }
+    }
+
+
 
     
 }
